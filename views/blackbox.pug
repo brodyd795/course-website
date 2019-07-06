@@ -1,0 +1,14 @@
+extends layout
+
+block content
+  .container
+    h2 Welcome, anonymous student!
+    #Blackbox.site-section
+      h4 Use the text box below to submit an anonymous comment or question to your instructor.
+      h4 Your input is completely anonymous, and therefore your instructor will respond to the entire class (copying the original message in the reply).
+      form(method="POST" action="/blackbox")
+        label(for="emailText")
+        textarea#emailText.form-control(name="emailText" rows="8" cols="80" placeholder="Enter your comment/question here" required)
+        br
+        button(type="submit") Submit
+      h3(style="color: red;") #{thankyou}

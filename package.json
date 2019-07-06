@@ -1,0 +1,28 @@
+{
+  "name": "120",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+//    "start": "node ./bin/www"
+  },
+  "author": "Brody Dingel",
+  "license": "ISC",
+  "dependencies": {
+    "auth0-js": "^9.10.4",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.4",
+    "dotenv": "^8.0.0",
+    "express": "^4.17.1",
+    "express-session": "^1.16.1",
+    "morgan": "^1.9.1",
+    "nodemailer": "^6.2.1",
+    "passport": "^0.4.0",
+    "passport-auth0": "^1.1.0",
+    "pug": "^2.0.3"
+  }
+}

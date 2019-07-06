@@ -1,0 +1,13 @@
+extends layout
+
+block content
+  .container
+    if locals.user
+      h2 Welcome, #{user.name.givenName}!
+    else
+      h2 Welcome, LING 120 student!
+    #Overview.site-section
+      h2 Overview
+      p For Assignment 4, you will need to complete four tasks using regular expressions as we've learned in class. You can find each task under 'Assignments' above.
+      p You have unlimited attempts on these tasks until the due date (9/15). Only the highest grade for each task will be kept.
+      p You may use any outside resources you like, but you should complete each task autonomously.

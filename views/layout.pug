@@ -1,0 +1,28 @@
+doctype html
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css')
+    script(src='http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js')
+    script(src='/public/js/client-app.js')
+    script(src='node_modules/auth0-js/build/auth0.js')
+  header
+    .title-bar
+      .title-div
+        h1 LING 120 – Computers and Language
+      .login-div
+        button(id="loginBtn")
+          if locals.user
+            a(id="qsLogoutBtn" href="/logout").logout-btn.logOutInBtn Log Out
+          else
+            a(id="qsLoginBtn" href="/login").login-btn.logOutInBtn Log In
+    .nav-bar
+      a(href="/") Overview
+      if locals.user
+        a(href="/assignments") Assignments
+        a(href="/grades") Grades
+      a(href="/resources") Resources
+      a(href="/blackbox") Black Box
+  body
+    block content

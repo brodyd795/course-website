@@ -1,0 +1,9 @@
+extends layout
+
+block content
+  //h1 Please write it better
+  h2(style="color: red;") Something went wrong.
+  h2(style="color: red;") Please reload the page and try again. If you were trying to submit an assignment, please pay special attention to the required format.
+  //h2= message
+  h2= error.status
+  pre #{error.stack}

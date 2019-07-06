@@ -1,0 +1,14 @@
+extends layout
+
+block content
+  .container
+    h2 Welcome, #{user.name.givenName}!
+    #Grades.site-section
+      p Here are your grades for the 4 regex tasks so far:
+      ul
+        li 1) Haigy Paigy – #{haigyPaigyScore}%
+        li 2) Turkish Plurals – #{turkishPluralsScore}%
+        li 3) Corpus Cleaning – #{corpusCleaningScore}%
+        li 4) Article Replacement – #{articleReplacementScore}%
+        li Total score – #{averageScore}%
+      p Remember, you have unlimited attempts on these tasks until the due date.
