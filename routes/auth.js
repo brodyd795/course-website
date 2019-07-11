@@ -12,7 +12,6 @@ dotenv.config();
 router.get('/login', passport.authenticate('auth0', {
   scope: 'openid email profile'
 }), function (req, res) {
-//  console.log("Made it to here!");
   res.redirect('/');
 });
 
@@ -32,13 +31,10 @@ router.get('/callback', function (req, res, next) {
 
 // Perform session logout and redirect to homepage
 router.get('/logout', (req, res) => {
-  //console.log(req.hostname);
   req.logout();
 
   var returnTo = req.protocol + '://' + req.hostname;
-  //console.log(returnTo);
   var port = req.connection.localPort;
-  //console.log(port);
   //if (port !== undefined && port !== 80 && port !== 443) {
   //  returnTo += ':' + port;
   //}
@@ -50,7 +46,6 @@ router.get('/logout', (req, res) => {
     returnTo: returnTo
   });
   logoutURL.search = searchString;
-  //console.log("logoutURL", logoutURL);
   res.redirect(logoutURL);
 });
 
