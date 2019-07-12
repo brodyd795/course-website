@@ -8,3 +8,6 @@ public/js/client-app.js
 regex.js
 user_data.json
 .env
+assets/client-app-old.js
+assets/style-old.css
+public/js/
