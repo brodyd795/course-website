@@ -38,14 +38,22 @@ router.post('/assignments', secured(), urlencodedParser, function(req, res, next
   var rawData = fs.readFileSync('user_data.json');
   var allUserData = JSON.parse(rawData);
   if (allUserData.hasOwnProperty(userEmail)) {
-    var userScores = allUserData[userEmail];
-    var userPrevScore = userScores[task];
+    var userData = allUserData[userEmail];
+    var userPrevScore = userData[task];
+    var submissionType = task + '_submissions';
+    //var userSubmissions = userData[submissionType];
 
     // If better score, save it
     if (userPrevScore < parseInt(score['myscore'])) {
       allUserData[userEmail][task] = parseInt(score['myscore']);
-      userScores = allUserData[userEmail]; // updating the variable, because its parent changed
-      allUserData[userEmail]['average'] = (userScores['haigyPaigy'] + userScores['turkishPlurals'] + userScores['corpusCleaning'] + userScores['articleReplacement'])/4;
+      userData = allUserData[userEmail]; // updating the variable, because its parent changed
+      allUserData[userEmail]['average'] = (userData['haigyPaigy'] + userData['turkishPlurals'] + userData['corpusCleaning'] + userData['articleReplacement'])/4;
+      allUserData[userEmail][submissionType].push(input);
+      fs.writeFile('user_data.json', JSON.stringify(allUserData, null, 2), function(err){
+        if (err) return console.log(err);
+      });
+    } else {
+      allUserData[userEmail][submissionType].push(input);
       fs.writeFile('user_data.json', JSON.stringify(allUserData, null, 2), function(err){
         if (err) return console.log(err);
       });
@@ -56,23 +64,30 @@ router.post('/assignments', secured(), urlencodedParser, function(req, res, next
       "turkishPlurals": 0,
       "corpusCleaning": 0,
       "articleReplacement": 0,
-      "average": 0
+      "average": 0,
+      "haigyPaigy_submissions": [],
+      "turkishPlurals_submissions": [],
+      "corpusCleaning_submissions": [],
+      "articleReplacement_submissions": []
     };
+
+    // save score if > 0
+    if (parseInt(score['myscore']) > 0) {
+      allUserData[userEmail][task] = parseInt(score['myscore']);
+    };
+
+    var submissionType = task + '_submissions';
+    //var userSubmissions = allUserData[userEmail][submissionType];
+    allUserData[userEmail][submissionType].push(input);
+
     // Write new 0 scores to file
     fs.writeFile('user_data.json', JSON.stringify(allUserData, null, 2), function(err){
       if (err) return console.log(err);
     });
 
-    var userScores = allUserData[userEmail];
-    var userPrevScore = userScores[task];
+    // var userData = allUserData[userEmail];
+    // var userPrevScore = userData[task];
 
-    // Save score
-    if (parseInt(score['myscore']) > 0) {
-      allUserData[userEmail][task] = parseInt(score['myscore']);
-      fs.writeFile('user_data.json', JSON.stringify(allUserData, null, 2), function(err){
-        if (err) return console.log(err);
-      });
-    };
   };
 
   res.render('assignments', {
@@ -94,12 +109,12 @@ router.get('/grades', secured(), function (req, res, next) {
 
   // If user has scores
   if (allUserData.hasOwnProperty(userEmail)) {
-    var userScores = allUserData[userEmail];
-    var haigyPaigyScore = userScores['haigyPaigy'];
-    var turkishPluralsScore = userScores['turkishPlurals'];
-    var corpusCleaningScore = userScores['corpusCleaning'];
-    var articleReplacementScore = userScores['articleReplacement'];
-    var averageScore = userScores['average'];
+    var userData = allUserData[userEmail];
+    var haigyPaigyScore = userData['haigyPaigy'];
+    var turkishPluralsScore = userData['turkishPlurals'];
+    var corpusCleaningScore = userData['corpusCleaning'];
+    var articleReplacementScore = userData['articleReplacement'];
+    var averageScore = userData['average'];
 
     res.render('grades', {
       userProfile: JSON.stringify(userProfile, null, 2),
@@ -117,7 +132,11 @@ router.get('/grades', secured(), function (req, res, next) {
       "turkishPlurals": 0,
       "corpusCleaning": 0,
       "articleReplacement": 0,
-      "average": 0
+      "average": 0,
+      "haigyPaigy_submissions": [],
+      "turkishPlurals_submissions": [],
+      "corpusCleaning_submissions": [],
+      "articleReplacement_submissions": []
     };
     // Write new 0 scores to file
     fs.writeFile('user_data.json', JSON.stringify(allUserData, null, 2), function(err){

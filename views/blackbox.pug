@@ -7,7 +7,7 @@ block content
       h4 Use the text box below to submit an anonymous comment or question to your instructor.
       h4 Your input is completely anonymous, and therefore your instructor will respond to the entire class (copying the original message in the reply).
       form(method="POST" action="/blackbox")
-        label(for="courseSection") Select your course and section number
+        label(for="courseSection") Select your course and section number:  
         select#courseSection.select(name="courseSection", required)
           option(value="" hidden) Choose course
           option(value="LING120") LING 120
