@@ -74,6 +74,8 @@ router.post('/assignments', secured(), urlencodedParser, function(req, res, next
     // save score if > 0
     if (parseInt(score['myscore']) > 0) {
       allUserData[userEmail][task] = parseInt(score['myscore']);
+      userData = allUserData[userEmail]; // updating the variable, because its parent changed
+      allUserData[userEmail]['average'] = (userData['haigyPaigy'] + userData['turkishPlurals'] + userData['corpusCleaning'] + userData['articleReplacement'])/4;
     };
 
     var submissionType = task + '_submissions';
