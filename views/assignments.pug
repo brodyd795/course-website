@@ -8,17 +8,17 @@ block content
         label(for="task") Select an assignment from this list:
         select#task.select(name="task", required)
           option(value="" hidden) Choose Assignment
-          option(value="articleReplacement") Article Replacement
-          option(value="turkishPlurals") Turkish Plurals
-          option(value="haigyPaigy") Haigy Paigy
-          option(value="corpusCleaning") Corpus Cleaning
+          option(value="articleReplacement" selected= "articleReplacement"==prevTask) Article Replacement
+          option(value="turkishPlurals" selected= "turkishPlurals"==prevTask) Turkish Plurals
+          option(value="haigyPaigy" selected= "haigyPaigy"==prevTask) Haigy Paigy
+          option(value="corpusCleaning" selected= "corpusCleaning"==prevTask) Corpus Cleaning
         p Assignment descriptions are available in #[a(href="/resources/120-regex-assignments-v2.pdf" target="_blank") this file].
         p First test your regular expressions on your computer, and then paste <strong>your regular expressions only</strong> into the text field below, one regular expression per line, using the following format:
         code s/matchPattern/replacePattern/flag(s)
         br
         label(for="code")
         br
-        textarea#code.form-control(name="code" rows="8" cols="80" placeholder="Enter your regular expressions" required)
+        textarea#code.form-control(name="code" rows="8" cols="80" placeholder="Enter your regular expressions here" required) #{prevCode}
         br
         button(type="submit") Submit
       .score-div

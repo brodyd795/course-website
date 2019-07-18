@@ -94,7 +94,9 @@ router.post('/assignments', secured(), urlencodedParser, function(req, res, next
 
   res.render('assignments', {
     score: score['myscore'],
-    passFail: passFail
+    passFail: passFail,
+    prevTask: task,
+    prevCode: input
   });
 });
 
