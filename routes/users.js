@@ -24,6 +24,7 @@ router.get('/assignments', secured(), function (req, res, next) {
 router.post('/assignments', secured(), urlencodedParser, function(req, res, next){
 
   var input = req.body['code'];
+  var input = input.trim();
   var task = req.body['task'];
   var testData = regex.testRegex(input, task);
   score['myscore'] = testData['score'];
