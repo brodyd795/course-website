@@ -1,3 +1,9 @@
+/* 
+ * This is where most of the brains of the app come in. 
+ * The assignments, grades, and blackbox page routes are all located here.
+ * This script also calls the regex.js script that runs the regex checker.
+ */
+
 var express = require('express');
 var secured = require('../lib/middleware/secured');
 var router = express.Router();
@@ -24,9 +30,9 @@ router.get('/assignments', secured(), function (req, res, next) {
 router.post('/assignments', secured(), urlencodedParser, function(req, res, next){
 
   var input = req.body['code'];
-  var input = input.trim();
+  var input = input.trim(); // in case the user had any newlines or spaces at the beginning or end of their input
   var task = req.body['task'];
-  var testData = regex.testRegex(input, task);
+  var testData = regex.testRegex(input, task); // send user input to regex tester in regex.js
   score['myscore'] = testData['score'];
   var passFail = testData['passFail'];
 
@@ -35,32 +41,31 @@ router.post('/assignments', secured(), urlencodedParser, function(req, res, next
   var userInfo = userProfile;
   var userEmail = userInfo['emails'][0]['value'];
 
-  // Get user previous score
+  // Get user data
   var rawData = fs.readFileSync('user_data.json');
   var allUserData = JSON.parse(rawData);
-  if (allUserData.hasOwnProperty(userEmail)) {
+  if (allUserData.hasOwnProperty(userEmail)) { // if user has posted data before or gone to Grades and is therefore in user_data.json
     var userData = allUserData[userEmail];
-    var userPrevScore = userData[task];
+    var userPrevScore = userData[task]; // extract their previous score on this task
     var submissionType = task + '_submissions';
-    //var userSubmissions = userData[submissionType];
 
     // If better score, save it
     if (userPrevScore < parseInt(score['myscore'])) {
       allUserData[userEmail][task] = parseInt(score['myscore']);
       userData = allUserData[userEmail]; // updating the variable, because its parent changed
       allUserData[userEmail]['average'] = (userData['haigyPaigy'] + userData['turkishPlurals'] + userData['corpusCleaning'] + userData['articleReplacement'])/4;
-      allUserData[userEmail][submissionType].push(input);
-      fs.writeFile('user_data.json', JSON.stringify(allUserData, null, 2), function(err){
+      allUserData[userEmail][submissionType].push(input); // pushing input to end of array so that I can save their answers in chronological order
+      fs.writeFile('user_data.json', JSON.stringify(allUserData, null, 2), function(err){ // write data to user_data.json
         if (err) return console.log(err);
       });
-    } else {
+    } else { // if user has never posted data before or gone to Grades (so doesn't exist in user_data.json)
       allUserData[userEmail][submissionType].push(input);
       fs.writeFile('user_data.json', JSON.stringify(allUserData, null, 2), function(err){
         if (err) return console.log(err);
       });
     };
   } else {
-    allUserData[userEmail] = {
+    allUserData[userEmail] = { // initialize new user's data
       "haigyPaigy": 0,
       "turkishPlurals": 0,
       "corpusCleaning": 0,
@@ -87,10 +92,6 @@ router.post('/assignments', secured(), urlencodedParser, function(req, res, next
     fs.writeFile('user_data.json', JSON.stringify(allUserData, null, 2), function(err){
       if (err) return console.log(err);
     });
-
-    // var userData = allUserData[userEmail];
-    // var userPrevScore = userData[task];
-
   };
 
   res.render('assignments', {
