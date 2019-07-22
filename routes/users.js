@@ -36,6 +36,10 @@ router.post('/assignments', secured(), urlencodedParser, function(req, res, next
   score['myscore'] = testData['score'];
   var passFail = testData['passFail'];
 
+  // get timestamp to record with answer and score
+  var date = new Date();
+  var date_pretty = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " +  date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+
   // Get user email address
   const { _raw, _json, ...userProfile } = req.user;
   var userInfo = userProfile;
@@ -54,12 +58,12 @@ router.post('/assignments', secured(), urlencodedParser, function(req, res, next
       allUserData[userEmail][task] = parseInt(score['myscore']);
       userData = allUserData[userEmail]; // updating the variable, because its parent changed
       allUserData[userEmail]['average'] = (userData['haigyPaigy'] + userData['turkishPlurals'] + userData['corpusCleaning'] + userData['articleReplacement'])/4;
-      allUserData[userEmail][submissionType].push(input); // pushing input to end of array so that I can save their answers in chronological order
+      allUserData[userEmail][submissionType].push([input, score['myscore'], date_pretty]); // pushing input to end of array so that I can save their answers in chronological order
       fs.writeFile('user_data.json', JSON.stringify(allUserData, null, 2), function(err){ // write data to user_data.json
         if (err) return console.log(err);
       });
     } else { // if user has never posted data before or gone to Grades (so doesn't exist in user_data.json)
-      allUserData[userEmail][submissionType].push(input);
+      allUserData[userEmail][submissionType].push([input, score['myscore'], date_pretty]);
       fs.writeFile('user_data.json', JSON.stringify(allUserData, null, 2), function(err){
         if (err) return console.log(err);
       });
@@ -86,7 +90,7 @@ router.post('/assignments', secured(), urlencodedParser, function(req, res, next
 
     var submissionType = task + '_submissions';
     //var userSubmissions = allUserData[userEmail][submissionType];
-    allUserData[userEmail][submissionType].push(input);
+    allUserData[userEmail][submissionType].push([input, score['myscore'], date_pretty]);
 
     // Write new 0 scores to file
     fs.writeFile('user_data.json', JSON.stringify(allUserData, null, 2), function(err){
