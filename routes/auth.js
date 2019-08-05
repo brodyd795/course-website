@@ -12,7 +12,7 @@ dotenv.config();
 router.get('/login', passport.authenticate('auth0', {
   scope: 'openid email profile'
 }), function (req, res) {
-  res.redirect('/');
+  res.redirect('/120');
 });
 
 // Perform the final stage of authentication and redirect to previously requested URL or '/user'
@@ -24,7 +24,7 @@ router.get('/callback', function (req, res, next) {
       if (err) { return next(err); }
       const returnTo = req.session.returnTo;
       delete req.session.returnTo;
-      res.redirect(returnTo || '/');
+      res.redirect(returnTo || '/120');
     });
   })(req, res, next);
 });

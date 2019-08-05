@@ -8,7 +8,7 @@ html
   header
     .title-bar
       .title-div
-        h1 <a href="/">LING 120 – Computers and Language</a>
+        h1 <a href="/120">LING 120 – Computers and Language</a>
       .login-div
         button(id="loginBtn")
           if locals.user
@@ -16,11 +16,11 @@ html
           else
             a(id="qsLoginBtn" href="/login").login-btn.logOutInBtn Log In
     .nav-bar
-      a(href="/") Overview
+      a(href="/120") Overview
       if locals.user
-        a(href="/assignments") Assignments
-        a(href="/grades") Grades
-      a(href="/resources") Resources
-      a(href="/blackbox") Black Box
+        a(href="/120/assignments") Assignments
+        a(href="/120/grades") Grades
+      a(href="/120/resources") Resources
+      a(href="/120/blackbox") Black Box
   body
     block content

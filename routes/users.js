@@ -19,7 +19,7 @@ var score = {myscore: ""};
 dotenv.config();
 
 /* GET assignments. */
-router.get('/assignments', secured(), function (req, res, next) {
+router.get('/120/assignments', secured(), function (req, res, next) {
   const { _raw, _json, ...userProfile } = req.user;
   res.render('assignments', {
     userProfile: JSON.stringify(userProfile, null, 2),
@@ -27,7 +27,7 @@ router.get('/assignments', secured(), function (req, res, next) {
   });
 });
 
-router.post('/assignments', secured(), urlencodedParser, function(req, res, next){
+router.post('/120/assignments', secured(), urlencodedParser, function(req, res, next){
 
   var input = req.body['code'];
   var input = input.trim(); // in case the user had any newlines or spaces at the beginning or end of their input
@@ -106,7 +106,7 @@ router.post('/assignments', secured(), urlencodedParser, function(req, res, next
   });
 });
 
-router.get('/grades', secured(), function (req, res, next) {
+router.get('/120/grades', secured(), function (req, res, next) {
 
   // Get user email
   const { _raw, _json, ...userProfile } = req.user;
@@ -167,12 +167,12 @@ router.get('/grades', secured(), function (req, res, next) {
 
 });
 
-router.get('/blackbox', function (req, res, next) {
+router.get('/120/blackbox', function (req, res, next) {
   res.render('blackbox');
 });
 
 
-router.post('/blackbox', urlencodedParser, function(req, res, next){
+router.post('/120/blackbox', urlencodedParser, function(req, res, next){
   var input = req.body['emailText'];
   var courseSection = req.body['courseSection'];
   var subject = 'BlackBox - ' + courseSection;

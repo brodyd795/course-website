@@ -3,7 +3,7 @@ block content
   .container
     h2 Welcome, #{user.name.givenName}!
     #Assignments.site-section
-      form(method="POST" action="/assignments")
+      form(method="POST" action="/120/assignments")
         label(for="task") Select an assignment from this list:  
         select#task.select(name="task", required)
           option(value="" hidden) Choose Assignment 
