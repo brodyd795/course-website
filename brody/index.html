@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta http-equiv="x-ua-compatible" content="ie=edge">
 <link rel="shortcut icon" href="brody/assets/icon.ico">
-<link href="brody/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<!-- The version of bootstrap below doesn't support the "stretched-link" class that is needed in the projects section. -->
+<!-- <link href="brody/css/bootstrap.min.css" rel="stylesheet" type="text/css"> -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 <link rel="stylesheet" href="brody/css/style.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Arvo|Oswald:400,500">
 <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
@@ -297,14 +299,11 @@
       </div>
     </div>
 
-
-
-
     <!-- Projects -->
 
     <div class="projects-wrapper" id="projects-wrapper">
 
-      <div class="container skills-section">
+      <!-- <div class="container skills-section"> -->
         <!-- <h2 class="text-center text-muted py-3">Skills & Projects</h2> -->
         <!-- <div class="row">
           <div class="col-sm-7 skill-levels">
@@ -322,9 +321,9 @@
           </div>
         </div>
         <hr class="hr-skills"> -->
-      </div>
+      <!-- </div> -->
 
-      
+
 
       <div class="container">
         <h2 class="text-center text-muted py-3 projects-title">Skills & Projects</h2>
@@ -335,11 +334,12 @@
                   <h4 class="card-title text-center">Accounting app</h4>
                   <p class="card-text">This home accounting app scrapes emails for info on new card transactions and logs it to a Google Sheet.</p>
                   <p class="card-text"><small class="text-muted">HTML Scraping | Google API | Regex</small></p>
-                  <a href="#" class="btn btn-primary stretched-link">Go somewhere</a>
                 </div>
-                <div class="card-footer">
+                <!-- <div class="card-footer">
                   <h5>Coming soon!</h5>
-                </div>
+                </div> -->
+                <a href="https://github.com/brodyd795/accounting" target="_blank" class="stretched-link"></a>
+
             </div>
             <div class="card mb-4">
                 <img class="card-img-top img-fluid" src="brody/assets/weather.jpg" alt="Money">
@@ -348,82 +348,66 @@
                     <p class="card-text">This script scrapes weather-forecast.com each morning and notifies me via email if rain is in the forecast for the day. (Don't want to forget my umbrella!)</p>
                     <p class="card-text"><small class="text-muted">Web Scraping | SMTP</small></p>
                 </div>
+                <a href="https://github.com/brodyd795/weather-app" target="_blank" class="stretched-link"></a>
             </div>
             <div class="w-100 d-none d-sm-block d-md-none"><!-- wrap every 2 on sm--></div>
             <div class="card mb-4">
-                <img class="card-img-top img-fluid" src="//placehold.it/500x280" alt="Inclement weather">
+                <img class="card-img-top img-fluid" src="brody/assets/classroom.jpg" alt="Classroom">
                 <div class="card-body">
-                    <h4 class="card-title">3 Card title</h4>
-                    <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                    <h4 class="card-title">Course Website</h4>
+                    <p class="card-text">This website tests my "Computers and Language" students on their regular expression skills, and it allows them to send me anonymous course feedback.</p>
+                    <p class="card-text"><small class="text-muted">Node.js | Express.js | Regex | Dynamic website </small></p>
                 </div>
+                <a href="http://brody.linguatorium.com/120" target="_blank" class="stretched-link"></a>
             </div>
             <div class="w-100 d-none d-md-block d-lg-none"><!-- wrap every 3 on md--></div>
             <div class="card mb-4">
-                <img class="card-img-top img-fluid" src="//placehold.it/500x280" alt="Card image cap">
+                <img class="card-img-top img-fluid" src="brody/assets/water_bottle.jpg" alt="Water bottle">
                 <div class="card-body">
-                    <h4 class="card-title">4 Card title</h4>
-                    <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                    <h4 class="card-title">"Drink Water" Reminder</h4>
+                    <p class="card-text">When a loved one falls ill, they need to remember to drink more water. All the time. This app sends them a helpful reminder via Facebook Messenger.</p>
+                    <p class="card-text"><small class="text-muted">Facebook API | Cron Schedule</small></p>
                 </div>
+                <a href="https://github.com/brodyd795/sickWaterReminder" target="_blank" class="stretched-link"></a>
             </div>
             <div class="w-100 d-none d-sm-block d-md-none"><!-- wrap every 2 on sm--></div>
              <div class="w-100 d-none d-lg-block d-xl-none"><!-- wrap every 4 on lg--></div>
             <div class="card mb-4">
-                <img class="card-img-top img-fluid" src="//placehold.it/500x280" alt="Card image cap">
+                <img class="card-img-top img-fluid" src="brody/assets/web_design.jpg" alt="Card image cap">
                 <div class="card-body">
-                    <h4 class="card-title">5 Card title</h4>
-                    <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                    <a href="#" class="btn stretched-link">Go somewhere</a>
+                    <h4 class="card-title">Product Landing Page</h4>
+                    <p class="card-text">This project through <a href="https://www.freecodecamp.org/">Free Code Camp</a> helped me learn the basics of responsive web design, featuring a landing page for my home accounting app.</p>
+                    <p class="card-text"><small class="text-muted">HTML5/CSS | Responsive Web Design</small></p>
                 </div>
+                <a href="https://github.com/brodyd795/productLandingPage-FCC" target="_blank" class="stretched-link"></a>
             </div>
             <div class="w-100 d-none d-xl-block"><!-- wrap every 5 on xl--></div>
             <div class="card mb-4">
-                <img class="card-img-top img-fluid" src="//placehold.it/500x300" alt="Card image cap">
+                <img class="card-img-top img-fluid" src="brody/assets/documentation.jpg" alt="Book">
                 <div class="card-body">
-                    <h4 class="card-title">6 Card title</h4>
-                    <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
-                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                    <h4 class="card-title">Technical Documentation Page</h4>
+                    <p class="card-text">Another project through <a href="https://www.freecodecamp.org/">Free Code Camp</a> for learning responsive web design. This one documents regular expressions for beginners.</p>
+                    <p class="card-text"><small class="text-muted">Responsive Web Design | Regular Expressions</small></p>
                 </div>
+                <a href="https://github.com/brodyd795/technicalDocumentationPage" target="_blank" class="stretched-link"></a>
             </div>
             <div class="w-100 d-none d-sm-block d-md-none"><!-- wrap every 2 on sm--></div>
             <div class="w-100 d-none d-md-block d-lg-none"><!-- wrap every 3 on md--></div>
             <div class="card mb-4">
-                <img class="card-img-top img-fluid" src="//placehold.it/500x270" alt="Card image cap">
+                <img class="card-img-top img-fluid" src="brody/assets/calendar.jpg" alt="Calendar">
                 <div class="card-body">
-                    <h4 class="card-title">7 Card title</h4>
-                    <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
-                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                    <h4 class="card-title">100 Days of Code</h4>
+                    <p class="card-text">Join me in the <a id="FCC-link" href="https://www.100daysofcode.com/" target="_blank">#100DaysOfCode</a> challenge! This log shows just how much you can learn with just 1 hour per day over 100 days. #301DaysOfCode is next!</p>
+                    <p class="card-text"><small class="text-muted">Self-taught programming</small></p>
                 </div>
+                <a href="https://github.com/brodyd795/100-days-of-code/blob/master/log.md" class="stretched-link"></a>
             </div>
-            <div class="card mb-4">
-                <img class="card-img-top img-fluid" src="//placehold.it/500x300" alt="Card image cap">
-                <div class="card-body">
-                    <h4 class="card-title">8 Card title</h4>
-                    <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
-                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                </div>
-            </div>
+            <!-- add card here -->
             <div class="w-100 d-none d-sm-block d-md-none"><!-- wrap every 2 on sm--></div>
             <div class="w-100 d-none d-lg-block d-xl-none"><!-- wrap every 4 on lg--></div>
-            <div class="card mb-4">
-                <img class="card-img-top img-fluid" src="//placehold.it/500x270" alt="Card image cap">
-                <div class="card-body">
-                    <h4 class="card-title">Card title</h4>
-                    <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
-                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                </div>
-            </div>
+            <!-- add card here -->
             <div class="w-100 d-none d-md-block d-lg-none"><!-- wrap every 3 on md--></div>
-            <div class="card mb-4">
-                <img class="card-img-top img-fluid" src="//placehold.it/500x270" alt="Card image cap">
-                <div class="card-body">
-                    <h4 class="card-title">10 Card title</h4>
-                    <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
-                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                </div>
-            </div>
+            <!-- add card here -->
         </div>
       </div>
     </div>
