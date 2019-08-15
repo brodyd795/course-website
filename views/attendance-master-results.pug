@@ -1,0 +1,42 @@
+extends layout
+block content
+  .container
+    h2 Welcome, #{user.name.givenName}!
+    #Attendance.site-section
+      p #{sql_names_and_date}
+      form(method="POST" action="/120/attendance/master")
+        label(for="course") Select course:
+        select#course.select(name="course", required)
+          option(value="" hidden) Select course
+          option(value="SPAN101") Spanish 101
+          option(value="LING120") Linguistics 120
+        br
+        label(for="date") Input the date for which you'd like to edit the attendance record:
+        input#date.form-control(name="date" value=date required)
+        br
+        br
+        button(type="submit") Submit
+        br
+        br
+      .attendance-div
+        .attendance-titles
+          div#name-title Name
+          div#status-title Status
+        .attendance-results
+          form(method="POST" action="/120/attendance/master/results")
+            -var data = roster
+            -var student_name_ids = []
+            -var student_status_ids = []
+            -for(var student in data)
+              -student_name_ids.push("student_name_"+student)
+              -student_status_ids.push("student_status_"+student)
+              label(for="entry")
+              .attendance-entry
+                input.student-name(name=student_name_ids[student] value=data[student]["name"] readonly required tabindex="-1")
+                p #[input.student-status(type="radio" name=student_status_ids[student] value="OK" checked= "OK"==data[student][date] required)] OK
+                p #[input.student-status(type="radio" name=student_status_ids[student] value="X" checked= "X"==data[student][date])] A
+                p #[input.student-status(type="radio" name=student_status_ids[student] value="T" checked= "T"==data[student][date])] T
+            input(type="hidden" name="num_students" value=num_students required)
+            input(type="hidden" name="date" value=date required readonly)
+            input(type="hidden" name="course" value=course required readonly)
+            button(type="submit") Submit

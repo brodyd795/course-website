@@ -14,6 +14,10 @@ var urlencodedParser = bodyParser.urlencoded({ extended: false});
 
 /* GET home page. */
 
+router.get('/sitemap', function(req, res, next) {
+  res.sendFile(path.join(__dirname+'/../sitemap.xml'));
+});
+
 router.get('/', function(req, res, next) {
   res.sendFile(path.join(__dirname+'/../brody/index.html'));
 });

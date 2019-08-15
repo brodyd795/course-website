@@ -8,7 +8,6 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
-//    "start": "node ./bin/www"
   },
   "author": "Brody Dingel",
   "license": "ISC",
@@ -23,6 +22,7 @@
     "nodemailer": "^6.2.1",
     "passport": "^0.4.0",
     "passport-auth0": "^1.1.0",
-    "pug": "^2.0.3"
+    "pug": "^2.0.3",
+    "sqlite3": "^4.0.9"
   }
 }

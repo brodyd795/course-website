@@ -196,3 +196,18 @@ pre {
   font-size: 15px;
 }
 
+.attendance-titles {
+  display: flex;
+  justify-content: space-between;
+}
+
+.attendance-entry {
+  display: flex;
+  justify-content: space-between;
+}
+
+.student-name {
+  border: none;
+  border-width: 0px;
+  background-color: #efefef;
+}
