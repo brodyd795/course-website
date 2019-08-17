@@ -140,6 +140,8 @@ body {
   /* opacity: 0.5; */
   height: 92vh;
   background-size: cover;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
   /* padding-top: 8vh; */
   /* padding-bottom: 30vh; */
   position: relative;
