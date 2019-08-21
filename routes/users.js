@@ -412,8 +412,6 @@ router.post('/120/attendance/master', secured(), urlencodedParser, function(req,
 
 });
 
-
-
 router.post('/120/attendance/master/results', secured(), urlencodedParser, function(req, res, next){
 
   const { _raw, _json, ...userProfile } = req.user;
@@ -422,24 +420,76 @@ router.post('/120/attendance/master/results', secured(), urlencodedParser, funct
 
   var num_students = req.body['num_students'];
   var num_type = parseInt(num_students);
-  var num_type2 = typeof(num_type);
   var date = req.body['date'];
   var course = req.body['course'];
+  var testing = "";
+  //var student_name;
+  //var student_status;
+  //var counter = 0;
 
-  var counter = 0;
+  for (let counter = 0; counter < num_students; counter++) {
+    //fs.appendFile("debugging.txt", counter, (err)=>{if (err) throw err;});
+    let student_name = req.body['student_name_' + counter];
+    let student_status = req.body['student_status_' + counter];
 
-  while (counter < num_students) {
-    var student_name = req.body['student_name_' + counter];
-    var student_status = req.body['student_status_' + counter];
+    let sql = 'UPDATE ' + course + ' SET ' + date + '="' + student_status + '" WHERE name="' + student_name + '"';
+    //fs.appendFile("debugging.txt", student_name+counter, (err)=>{if (err) throw err;});
+    db.all(sql, (err, results)=> {
+      let email_sql = 'SELECT * FROM ' + course + ' WHERE name="' + student_name + '"';
+      //fs.appendFile("debugging.txt", student_name+counter, (err)=>{if (err) throw err;});
+      //let absences_count = 0;
+      //let tardies_count = 0;
+      //let combined_count = 0;
+      //fs.appendFile("debugging.txt", counter, (err)=>{if (err) throw err;});
+      db.all(email_sql, (email_err, email_results)=> {
+        //let testing = email_results[0];
+        let absences_count = 0;
+        let tardies_count = 0;
+        let combined_count = 0;
 
-    var sql = 'UPDATE ' + course + ' SET ' + date + '="' + student_status + '" WHERE name="' + student_name + '"';
+        let keys = Object.keys(email_results[0]);
+        let key;
 
-    db.run(sql, (err, results)=> {});
-    counter++;
+        let student_email = email_results[0]["email"];
+        for (key in keys) {
+          if (email_results[0][keys[key]] == 'X') {
+            absences_count++;
+          } else if (email_results[0][keys[key]] == 'T') {
+            tardies_count++;
+          }
+        }
+        combined_count = absences_count + Math.floor(tardies_count/3);
+        if ((course == "SPAN101" && combined_count == 4 && email_results[0]["emailed"] == "no") || (course == "LING120" && combined_count == 3 && email_results[0]["emailed"] == "no")) {
+          var subject = 'Your attendance in ' + course;
+          var text = 'Dear ' + student_name + ',\n\nThis is an automated message from your ' + course + ' instructor regarding your attendance.\n\nYour record shows that you have ' + combined_count + ' absences in ' + course + '. As a reminder, this is the maximum number of absences allowed before your final grade is impacted for each additional absence.\n\nYou may check your attendance record by visiting http://brody.linguatorium.com/120/attendance. If you have any questions, please email your instructor immediately at btdingel@iastate.edu. (Do NOT respond by clicking "Reply".)';
+          var transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+              user: process.env.EMAIL_USERNAME,
+              pass: process.env.EMAIL_PASS
+            }
+          });
+    
+          var mailOptions = {
+            from: process.env.EMAIL_USERNAME,
+            to: student_email,
+            subject: subject,
+            text: text
+          };
+    
+          transporter.sendMail(mailOptions, function(error, info){
+            if (error) {
+              pass
+            } else {
+              pass
+            }
+          });
+          let sql_change_emailed = 'UPDATE ' + course + ' SET emailed="yes" WHERE name="' + student_name + '"';
+          db.run(sql_change_emailed, (err, results)=> {});
+        }
+      });
+    });
   }
-
-  var new_sql = 'INSERT INTO SPAN101 (name) VALUES ('+ num_type2 + ')';
-  db.run(new_sql, (err, results)=> {});
 
   res.render('attendance-master', {
     userProfile: JSON.stringify(userProfile, null, 2),
@@ -448,6 +498,5 @@ router.post('/120/attendance/master/results', secured(), urlencodedParser, funct
   });
 
 });
-
 
 module.exports = router;
