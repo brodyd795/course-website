@@ -11,6 +11,7 @@ var userInViews = require('./lib/middleware/userInViews');
 var authRouter = require('./routes/auth');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var bodyParser = require('body-parser');
 
 // dotenv.load(); // changed this from the default because it threw an error and the suggested change was from stackoverflow
 dotenv.config();
@@ -51,7 +52,8 @@ app.set('view engine', 'pug');
 
 app.use(logger('dev'));
 app.use(cookieParser());
-
+app.use(bodyParser.json({limit: '50mb'}));
+      
 // config express-session
 var sess = {
   secret: process.env.SESS_SECRET,

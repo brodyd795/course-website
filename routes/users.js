@@ -423,26 +423,16 @@ router.post('/120/attendance/master/results', secured(), urlencodedParser, funct
   var date = req.body['date'];
   var course = req.body['course'];
   var testing = "";
-  //var student_name;
-  //var student_status;
-  //var counter = 0;
 
   for (let counter = 0; counter < num_students; counter++) {
-    //fs.appendFile("debugging.txt", counter, (err)=>{if (err) throw err;});
     let student_name = req.body['student_name_' + counter];
     let student_status = req.body['student_status_' + counter];
 
     let sql = 'UPDATE ' + course + ' SET ' + date + '="' + student_status + '" WHERE name="' + student_name + '"';
-    //fs.appendFile("debugging.txt", student_name+counter, (err)=>{if (err) throw err;});
     db.all(sql, (err, results)=> {
       let email_sql = 'SELECT * FROM ' + course + ' WHERE name="' + student_name + '"';
-      //fs.appendFile("debugging.txt", student_name+counter, (err)=>{if (err) throw err;});
-      //let absences_count = 0;
-      //let tardies_count = 0;
-      //let combined_count = 0;
-      //fs.appendFile("debugging.txt", counter, (err)=>{if (err) throw err;});
       db.all(email_sql, (email_err, email_results)=> {
-        //let testing = email_results[0];
+      //fs.appendFile("debugging.txt", counter, (err)=>{if (err) throw err;});
         let absences_count = 0;
         let tardies_count = 0;
         let combined_count = 0;

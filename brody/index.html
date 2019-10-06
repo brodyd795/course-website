@@ -12,6 +12,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Arvo|Oswald:400,500">
 <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
 <script src="https://kit.fontawesome.com/44e39137fb.js"></script>
+<script src="https://www.google.com/recaptcha/api.js?render=6Le1srUUAAAAAH2d_p4BBoLF7oxGqix2-FGI4Onw"></script>
 <meta name="google-site-verification" content="EmVublkyhd77zczoecz4cwZn1czlLLBUUkLJ7ytCNvk" />
 <title>Brody Dingel</title>
 </head>
@@ -37,8 +38,8 @@
         <li class="nav-item dropdown" id="resumeCV-dropdown">
           <a href="#" id="resumeCV" class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Resume/CV</a>
           <div class="dropdown-menu" aria-labelledby="resumeCV">
-            <a href="brody/assets/resume.docx" download class="dropdown-item">Download Resume</a>
-            <a href="brody/assets/1_CV_Dingel_current.docx" download class="dropdown-item">Download CV</a>
+            <a href="brody/assets/resume.pdf" download class="dropdown-item">Download Resume</a>
+            <a href="brody/assets/1_CV_Dingel_current.pdf" download class="dropdown-item">Download CV</a>
           </div>
         </li>
         <li class="nav-item">
@@ -430,7 +431,7 @@
               </div>
 
               <div class="collapse" id="email-form">
-                <form class="" action="/" method="post">
+                <form class="" id="contact-form">
                   <div class="form-group" id="name-field">
                     <label for="contacter-name"></label>
                     <input type="text" id="contacter-name" name="contacter-name" class="form-control" placeholder="Enter name" required>
@@ -444,7 +445,7 @@
                     <textarea name="contacter-message" id="contacter-message" rows="6" cols="60" class="form-control" placeholder="Looking forward to hearing from you!" required></textarea>
                   </div>
                   <div class="text-right">
-                    <button href="#" type="submit" class="btn btn-primary" name="button">Send!</button>
+                    <button href="#" id="contact-submit-btn" type="submit" class="btn btn-primary" name="button">Send!</button>
                   </div>
                 </form>
               </div>
@@ -472,7 +473,8 @@
 
 
   <!-- jQuery -->
-  <script src="brody/js/jquery-3.2.1.slim.min.js"></script>
+  <!-- <script src="brody/js/jquery-3.2.1.slim.min.js"></script> -->
+  <script src='brody/js/jquery-3.4.1.min.js'></script>
   <script src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js'></script>
   <script src="https://cdn.jsdelivr.net/npm/typeit@6/dist/typeit.min.js"></script>
   <script src="brody/js/tether.min.js"></script>
