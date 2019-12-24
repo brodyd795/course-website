@@ -3,7 +3,7 @@ block content
   .container
     h2 Welcome, #{user.name.givenName}!
     #Attendance.site-section
-      form(method="POST" action="/120/attendance")
+      form(method="POST" action="/courses/attendance")
         label(for="course") Select course:
         select#course.select(name="course", required)
           option(value="" hidden) Select course

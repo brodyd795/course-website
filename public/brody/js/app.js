@@ -1,10 +1,6 @@
-// $(document).ready(function(){
-//   $('.header').height($(window).height());
-// });
-
 new TypeIt('#typed-heading', {
   strings: ['Software developer.', 'Linguist.', 'Instructor.', 'Entrepreneur.'],
-  speed: 40, // set to 60 in production mode; in 0 for testing for convenience
+  speed: 40,
   lifeLike: true,
   breakLines: true
 })

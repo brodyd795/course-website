@@ -17,6 +17,19 @@ var request = require('request');
 
 //dotenv.config();
 
+checkRosters = userEmail => {
+  var roster101 = fs.readFileSync("roster101.txt", "utf-8").split("\n");
+  var roster120 = fs.readFileSync("roster120.txt", "utf-8").split("\n");
+
+  if (roster101.includes(userEmail)) {
+    return "Español 101";
+  } else if (roster120.includes(userEmail)) {
+    return "Linguistics 120";
+  } else {
+    return "SPAN 101 / LING 120";
+  }
+};
+
 router.get('/sitemap', function(req, res, next) {
   res.sendFile(path.join(__dirname+'/../sitemap.xml'));
 });
@@ -26,17 +39,12 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/', urlencodedParser, function(req, res, next) {
-  //var name = req.body['contacter-name'];
-  //var email = req.body['contacter-email'];
-  //var message = req.body['contacter-message'];
-  //
   var contacterData = req.body;
   var contacterName = contacterData.contacterName;
   var contacterEmail = contacterData.contacterEmail;
   var contacterMessage = contacterData.contacterMessage;
-  fs.appendFile("debugging.txt", JSON.stringify(req.body), (err)=>{if (err) throw err;});
+  //fs.appendFile("debugging.txt", JSON.stringify(req.body), (err)=>{if (err) throw err;});
 
-  //console.log('xxxxxxxxxxxxxxxxx', req.body);
   if (!req.body.captcha){
     return res.json({msg: 'captcha token is undefined'});
   }
@@ -51,7 +59,7 @@ router.post('/', urlencodedParser, function(req, res, next) {
     body = JSON.parse(body);
 
     if (!body.success || body.score < 0.4) {
-      return res.json({'msg':'you might be a robot', 'score': body.score}); // here I'll want to just disregard
+      return res.json({'msg':'you might be a robot', 'score': body.score});
     }
     var email_text = contacterName + ' sent you a message on your personal website. You can contact them at ' + contacterEmail + '. \n\nMessage:\n' + contacterMessage;
 
@@ -79,68 +87,49 @@ router.post('/', urlencodedParser, function(req, res, next) {
     });
     return res.json({'msg':'you have been verified', 'score': body.score, 'contacterData': contacterData});
   });
-  //const contactInfo = {
-  //  name: req.body['contacter-name'],
-  //  email: req.body['contacter-email'],
-  //  message: req.body['contacter-message']
-  //}
-  //fs.appendFile("debugging.txt", name+"\n"+email+"\n"+message+"\n"+JSON.stringify(req.body)+"\n", (err)=>{if (err) throw err;});
-  //fs.appendFile("debugging.txt", req.body, (err)=>{if (err) throw err;});
-
-
-
-/*
-  var email_text = contacterName + ' sent you a message on your personal website. You can contact them at ' + contacterEmail + '. \n\nMessage:\n' + contacterMessage;
-
-var transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.EMAIL_USERNAME,
-    pass: process.env.EMAIL_PASS
-  }
-});
-
-var mailOptions = {
-  from: process.env.EMAIL_USERNAME,
-  to: process.env.EMAIL_RECIPIENT_PERSONAL_SITE,
-  subject: "Personal message from " + name,
-  text: email_text
-};
-
-transporter.sendMail(mailOptions, function(error, info){
-  if (error) {
-    pass
-  } else {
-    pass
-  }
-});*/
-  
-  //res.sendFile(path.join(__dirname+'/../brody/index.html'));
 });
 
 
-//router.post('/ajax', function(req, res) {
-//  var contacterName = req.body;
-//  res.send(contacterName);
-//});
-
-
-router.get('/120-test', function(req, res, next) {
-  res.sendFile(path.join(__dirname+'/../120-test/120-test.html'));
-});
-
-router.get('/120', function (req, res, next) {
+router.get('/courses/index-old', function (req, res, next) {
   res.render('index', { title: 'Overview' });
 });
 
-/* GET resources page */
-router.get('/120/resources', function (req, res, next) {
-  res.render('resources', { title: 'Resources' });
+router.get('/courses', function (req, res, next) {
+  if (req.user) {
+    const { _raw, _json, ...userProfile } = req.user;
+
+    var userInfo = userProfile;
+    var userEmail = userInfo['emails'][0]['value'];
+
+    var courseHeading = checkRosters(userEmail);
+    var givenName = userProfile.name.givenName;
+  } else {
+    var courseHeading = "SPAN 101 / LING 120";
+    var givenName = "ISU student";
+  }
+  res.render('index-react', { 
+    title: 'Home', 
+    courseHeading: courseHeading,
+    givenName: givenName
+  });
 });
 
-/* GET test page */
-router.get('/testDir/test', function(req, res, next) {
-  res.render('test');
+/*router.get('/120/assignments-react', function (req, res, next) {
+  const otherData = 'otherData';
+
+  const userData = {
+        otherData: otherData
+  }
+
+  res.render('assignments-react', {
+    userData: userData,
+    title: 'Assignments'
+  });
+});*/
+
+/* GET resources page */
+router.get('/courses/resources-old', function (req, res, next) {
+  res.render('resources', { title: 'Resources' });
 });
 
 module.exports = router;

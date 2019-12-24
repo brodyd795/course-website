@@ -3,7 +3,7 @@ block content
   .container
     h2 Welcome, #{user.name.givenName}!
     #Assignments.site-section
-      form(method="POST" action="/120/assignments")
+      form(method="POST" action="/courses/assignments")
         label(for="task") Select an assignment from this list:  
         select#task.select(name="task", required)
           option(value="" hidden) Choose Assignment 
@@ -19,6 +19,11 @@ block content
         br
         textarea#code.form-control(name="code" rows="8" cols="80" placeholder="# Example input\n\ns/teh/the/g\ns/ISU/Iowa State University/g" required) #{prevCode}
         br
+        //-var time = new Date().getTime();
+        //if time>1575698400000
+        //  button(type="button" onclick="alert('Sorry, this assignment has closed already.')") Submit
+        //else
+        //  button(type="submit") Submit
         button(type="submit") Submit
       .score-div
         ul(style="list-style-type: none;")
