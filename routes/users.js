@@ -195,7 +195,7 @@ router.get('/courses/blackbox', secured(), function (req, res, next) {
 router.post('/courses/blackbox', secured(), function (req, res, next) {
 
   var input = req.body['messageValue'];
-  var course = req.body['courseValue'];
+  var course = req.body['courseHeading'];
 
   const { _raw, _json, ...userProfile } = req.user;
   const otherData = 'otherData';
@@ -203,10 +203,7 @@ router.post('/courses/blackbox', secured(), function (req, res, next) {
   var userInfo = userProfile;
   var userEmail = userInfo['emails'][0]['value'];
 
-  if (checkRosters(userEmail) === "SPAN 101/LING 120") {
-    var success = false;
-  } else {
-    var success = true;
+    //var success = true;
     var transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
@@ -229,10 +226,9 @@ router.post('/courses/blackbox', secured(), function (req, res, next) {
         pass
       }
     });
-  }
 
-  var sendData = { success: success };
-  res.send(sendData);
+  //var sendData = { success: success };
+  res.send();
 
 
 
