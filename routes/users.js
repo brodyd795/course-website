@@ -17,6 +17,10 @@ let db = new sqlite3.Database('/usr/share/nginx/html/120/attendance.db');
 
 var urlencodedParser = bodyParser.urlencoded({ extended: false});
 var score = {myscore: ""};
+var util = require("util");
+var readFile = util.promisify(fs.readFile);
+var fetch = require("node-fetch");
+
 
 dotenv.config();
 
@@ -230,13 +234,6 @@ router.post('/courses/blackbox', secured(), function (req, res, next) {
   //var sendData = { success: success };
   res.send();
 
-
-
-
-
-
-
-
 });
 
 router.get('/courses/attendance', secured(), function (req, res, next) {
@@ -263,24 +260,182 @@ router.get('/courses/attendance', secured(), function (req, res, next) {
 
 router.get('/courses/grades', secured(), function (req, res, next) {
   const { _raw, _json, ...userProfile } = req.user;
-  const otherData = 'otherData';
 
   var userInfo = userProfile;
   var userEmail = userInfo['emails'][0]['value'];
 
   var courseHeading = checkRosters(userEmail);
 
-  const userData = {
-    userProfile: JSON.stringify(userProfile, null, 2),
-    otherData: otherData
-  }
+(async function getGrades(username) {
+  try {
+  var roster = await readFile("netIDs.txt", "utf8");
 
-  res.render('grades-react', {
-    userData: userData,
-    title: 'Grades',
-    courseHeading: courseHeading,
-    givenName: userProfile.name.givenName
+  if (!roster.includes(username)) {
+    fs.appendFile("devlog.txt", "Apparently roster doesn't include username", function(err) {
+      if (err) return console.log(err);
+    });
+    res.render("grades-react", {
+      userProfile: JSON.stringify(userProfile, null, 2),
+      title: "Grades",
+      courseHeading: courseHeading,
+      givenName: userProfile.name.givenName,
+      grades: "Not in roster"
+    });
+  } else {
+    fs.appendFile("devlog.txt", "About to try the promise.all", function(err) {
+      if (err) return console.log(err);
+    });
+    Promise.all([scrapeUserData(username), getRegexGrades(username)]).then(
+      grades => {
+        fs.appendFile("devlog.txt", JSON.stringify(grades), function(err) {
+          if (err) return console.log(err);
+        });
+        res.render("grades-react", {
+          userProfile: JSON.stringify(userProfile, null, 2),
+          title: "Grades",
+          courseHeading: courseHeading,
+          givenName: userProfile.name.givenName,
+          grades: grades
+        });
+      }
+    );
+  }
+ } catch (err) {
+   fs.appendFile("devlog.txt", err, function(err) {
+      if (err) return console.log(err);
+    });
+ }
+})(userEmail);
+
+async function getRegexGrades(username) {
+  try {
+    fs.appendFile("devlog.txt", "Got into getRegexGrades()", function(err) {
+      if (err) return console.log(err);
+    });
+    var regexAllData = await readFile("user_data.json");
+    var regexAllData = JSON.parse(regexAllData);
+    if (!regexAllData.hasOwnProperty(username)) {
+      regexAllData[username] = {
+        haigyPaigy: 0,
+        turkishPlurals: 0,
+        corpusCleaning: 0,
+        articleReplacement: 0,
+        average: 0,
+        haigyPaigy_submissions: [],
+        turkishPlurals_submissions: [],
+        corpusCleaning_submissions: [],
+        articleReplacement_submissions: []
+      };
+      fs.writeFile(
+        "user_data.json",
+        JSON.stringify(regexAllData, null, 2),
+        function(err) {
+          if (err) return console.log(err);
+        }
+      );
+      fs.appendFile("devlog.txt", "\n\nWrote in brand new regex grades\n\n", function(err) {
+        if (err) return console.log(err);
+      });
+      return {
+        haigyPaigy: 0,
+        turkishPlurals: 0,
+        corpusCleaning: 0,
+        articleReplacement: 0,
+        average: 0
+      };
+    }
+    var regexGrades = {
+      haigyPaigyScore: regexAllData[username]["haigyPaigy"],
+      turkishPluralsScore: regexAllData[username]["turkishPlurals"],
+      corpusCleaningScore: regexAllData[username]["corpusCleaning"],
+      articleReplacementScore: regexAllData[username]["articleReplacement"],
+      averageScore: regexAllData[username]["average"]
+    };
+    fs.appendFile("devlog.txt", "\n\nGot existing regex grades\n\n", function(err) {
+      if (err) return console.log(err);
+    });
+    return regexGrades;
+  } catch (err) {
+    fs.appendFile("devlog.txt", err, function(err) {
+      if (err) return console.log(err);
+    });
+  }
+}
+
+async function scrapeUserData(username) {
+  try {
+    fs.appendFile("devlog.txt", "Got into scrapeuserData()", function(err) {
+      if (err) return console.log(err);
+    });
+    const fccChallenges = JSON.parse(
+      await readFile("fcc-challenges.json", "utf8")
+    );
+
+    var fccUsername = username.replace(/\@\w+\.\w+/, "_ling120");
+
+    fs.appendFile("devlog.txt", `\n\nfccUsername: ${fccUsername}\n\n`, function(err) {
+      if (err) return console.log(err);
+    });
+
+    let rawUserData = await fetch(
+      `https://api.freecodecamp.org/internal/api/users/get-public-profile?username=${fccUsername}`
+    );
+    let userData = await rawUserData.json();
+
+    if (userData.hasOwnProperty("entities")) {
+      if (userData["entities"]["user"][fccUsername].hasOwnProperty("completedChallenges")) {
+        let scores = calculate(
+          fccChallenges,
+          userData["entities"]["user"][fccUsername]["completedChallenges"]
+        );
+        return scores;
+      } else {
+        fs.appendFile("devlog.txt", "\n\nNot public\n\n", function(err) {
+          if (err) return console.log(err);
+        });
+        return "Not public";
+      }
+    } else {
+      return "No fCC challenges completed yet.";
+    }
+  } catch (err) {
+    fs.appendFile("devlog.txt", err, function(err) {
+      if (err) return console.log(err);
+    });
+    return null;
+  }
+}
+
+function calculate(fccChallenges, userData) {
+  return new Promise((resolve, reject) => {
+    let basicJSCount = (regexCount = debugCount = 0);
+
+    for (let challenge of userData) {
+      if (fccChallenges["basic-javascript"]["ids"].includes(challenge.id)) {
+        basicJSCount++;
+      } else if (
+        fccChallenges["regular-expressions"]["ids"].includes(challenge.id)
+      ) {
+        regexCount++;
+      } else if (fccChallenges["debugging"]["ids"].includes(challenge.id)) {
+        debugCount++;
+      }
+    }
+
+    let scores = {
+      basicJSCount: Math.round((basicJSCount / 110) * 100) / 100,
+      regexCount: Math.round((regexCount / 33) * 100) / 100,
+      debugCount: Math.round((debugCount / 12) * 100) / 100,
+      totalCount:
+        Math.round(
+          (basicJSCount / 110 + regexCount / 33 + debugCount / 12) / 3 * 10
+        ) / 10
+    };
+    resolve(scores);
   });
+}
+
+
 });
 
 router.post('/courses/assignments-old', secured(), urlencodedParser, function(req, res, next){
