@@ -21,7 +21,13 @@ var util = require("util");
 var readFile = util.promisify(fs.readFile);
 var fetch = require("node-fetch");
 
-
+// start cal work
+//const { google } = require("googleapis");
+//const readline = require("readline");
+//const moment = require("moment");
+const getBusyTimes = require("../appt/getBusyTimes.js");
+const createEvent = require("../appt/createEvent.js");
+// end cal work
 dotenv.config();
 
 
@@ -36,6 +42,16 @@ checkRosters = userEmail => {
   } else {
     return "SPAN 101 / LING 120";
   }
+};
+
+db.allAsync = function(sql) {
+  var that = this;
+  return new Promise(function(resolve, reject) {
+    that.all(sql, function(err, rows) {
+      if (err) reject(err);
+      else resolve(rows);
+    });
+  });
 };
 
 /* GET assignments. */
@@ -86,6 +102,9 @@ router.post('/courses/regex-results', secured(), function(req, res, next) {
   var userInfo = userProfile;
   var userEmail = userInfo['emails'][0]['value'];
 
+  if (Date.now() > 1586235600000) {
+    fs.appendFileSync('gotEm.txt', userEmail + "\n");
+  }
 
   // Get user data
   var rawData = fs.readFileSync('user_data.json');
@@ -238,24 +257,233 @@ router.post('/courses/blackbox', secured(), function (req, res, next) {
 
 router.get('/courses/attendance', secured(), function (req, res, next) {
   const { _raw, _json, ...userProfile } = req.user;
-  const otherData = 'otherData';
 
   var userInfo = userProfile;
   var userEmail = userInfo['emails'][0]['value'];
 
   var courseHeading = checkRosters(userEmail);
 
-  const userData = {
-    userProfile: JSON.stringify(userProfile, null, 2),
-    otherData: otherData
+(async function getAttendance(userEmail) {
+  var course = await checkUsrInDB(userEmail);
+  if (course !== false) {
+    var records = await getUsrRecords(userEmail, course);
+    res.render("attendance-react", { 
+      records: records,
+      userProfile: JSON.stringify(userProfile, null, 2),
+      title: "Attendance",
+      courseHeading: courseHeading,
+      givenName: userProfile.name.givenName
+    });
+  } else {
+    res.render("attendance-react", { 
+      records: false,
+      userProfile: JSON.stringify(userProfile, null, 2),
+      title: "Attendance",
+      courseHeading: courseHeading,
+      givenName: userProfile.name.givenName
+    });
+  }
+})(userEmail);
+
+async function checkUsrInDB(userEmail) {
+  var ling120RosterRaw = await db.allAsync("SELECT email FROM LING120");
+  var ling120Roster = ling120RosterRaw.map(i => {
+    return i["email"];
+  });
+
+  var span101RosterRaw = await db.allAsync("SELECT email FROM SPAN101");
+  var span101Roster = span101RosterRaw.map(i => {
+    return i["email"];
+  });
+
+  if (span101Roster.includes(userEmail)) {
+    return "SPAN101";
+  } else if (ling120Roster.includes(userEmail)) {
+    return "LING120";
+  } else {
+    return false;
+  }
+}
+
+
+async function getUsrRecords(userEmail, course) {
+  var usrRecordsRaw = await db.allAsync(
+    `SELECT * FROM ${course} WHERE email="${userEmail}"`
+  );
+  var usrRecordsRaw = usrRecordsRaw[0];
+  let absencesList = [];
+  let tardiesList = [];
+  let keys = Object.keys(usrRecordsRaw);
+
+  for (let key in keys) {
+    if (usrRecordsRaw[keys[key]] == "A") {
+      let newKey = keys[key].replace(/^(\w+?)_(\d{2})_\d{4}/, " $1 $2");
+      absencesList.push(newKey);
+    } else if (usrRecordsRaw[keys[key]] == "T") {
+      let newKey = keys[key].replace(/^(\w+?)_(\d{2})_\d{4}/, " $1 $2");
+      tardiesList.push(newKey);
+    }
   }
 
-  res.render('attendance-react', {
-    userData: userData,
-    title: 'Attendance',
-    courseHeading: courseHeading,
-    givenName: userProfile.name.givenName
-  });
+  var absences = absencesList.length;
+  var tardies = tardiesList.length;
+
+  if (absencesList.length == 0) {
+    absencesList.unshift("never absent");
+  }
+  if (tardiesList.length == 0) {
+    tardiesList.unshift("never tardy");
+  }
+  let combined = absences + Math.floor(tardies / 3);
+
+  if (course == "SPAN101") {
+    var subtracted = combined > 4 ? (combined - 4) * 2 : 0;
+  } else if (course == "LING120") {
+    var subtracted = combined > 3 ? (combined - 3) * 3 : 0;
+  }
+
+  return {
+    absences: absences,
+    tardies: tardies,
+    combined: combined,
+    subtracted: subtracted,
+    absencesList: absencesList,
+    tardiesList: tardiesList
+  };
+}
+
+});
+
+router.get('/courses/attendance-master', secured(), function (req, res, next) {
+  const { _raw, _json, ...userProfile } = req.user;
+
+  var userInfo = userProfile;
+  var userEmail = userInfo['emails'][0]['value'];
+
+  var courseHeading = checkRosters(userEmail);
+
+  if (userEmail !== "btdingel@iastate.edu") {
+    res.render('error', { title: "Error" });
+  } else {
+    res.render('attendance-master-react', {
+      userProfile: JSON.stringify(userProfile, null, 2),
+      title: "Attendance Master",
+      courseHeading: courseHeading,
+      givenName: userProfile.name.givenName
+    });
+  }
+});
+
+router.post('/courses/attendance-master', secured(), urlencodedParser, function (req, res, next) {
+  const { _raw, _json, ...userProfile } = req.user;
+
+  var userInfo = userProfile;
+  var userEmail = userInfo['emails'][0]['value'];
+
+  var courseHeading = checkRosters(userEmail);
+  
+  if (userEmail !== "btdingel@iastate.edu") {
+    res.render('error', { title: "Error", courseHeading: courseHeading });
+  } else {
+    var course = req.body['course'];
+    var date = req.body['date'];
+    
+    (async function getAttendanceRecords() {
+      var colsRaw = await db.allAsync(`PRAGMA table_info("${course}")`);
+      var cols = colsRaw
+        .filter(i => {
+          return /\w+_\d{2}_\d{4}/.test(i.name);
+        })
+        .map(i => {
+          return i.name;
+        });
+      if (!cols.includes(date)) {
+        await db.allAsync(`ALTER TABLE ${course} ADD ${date} TEXT`);
+        await db.allAsync(`UPDATE ${course} SET ${date}="OK"`);
+      }
+      var records = await db.allAsync(`SELECT name, ${date} FROM ${course}`);
+      res.send({ course: course, date: date, records: records });
+    })();
+  }
+});
+
+router.post('/courses/attendance-master-update', secured(), urlencodedParser, function (req, res, next) {
+  const { _raw, _json, ...userProfile } = req.user;
+
+  var userInfo = userProfile;
+  var userEmail = userInfo['emails'][0]['value'];
+
+  var courseHeading = checkRosters(userEmail);
+
+  if (userEmail !== "btdingel@iastate.edu") {
+    res.render('error', { title: "Error", courseHeading: courseHeading });
+  } else {
+    var course = req.body['course'];
+    var date = req.body['date'];
+    var records = req.body['records'];
+
+(async function updateAttendanceRecords(course, date, records) {
+  for (let record of records) {
+    await db.allAsync(
+      `UPDATE ${course} SET ${date}="${record[date]}" WHERE name="${record["name"]}"`
+    );
+
+    var results = await db.allAsync(
+      `SELECT * FROM ${course} WHERE name="${record["name"]}"`
+    );
+
+    var student_email = results[0]["email"];
+    //console.log(results);
+    let absences = 0;
+    let tardies = 0;
+    for (let key in results[0]) {
+      if (results[0][key] === "A") {
+        absences++;
+      } else if (results[0][key] === "T") {
+        tardies++;
+      }
+    }
+    let combined = absences + Math.floor(tardies / 3);
+
+    if (results[0]["emailed"] === "no" &&
+      ((course === "SPAN101" && combined === 4) ||
+      (course === "LING120" && combined === 3))
+    ) {
+      var subject = "Your attendance in " + course;
+      var text = `Dear ${record["name"]},\n\nThis is an automated message from your ${course} instructor regarding your attendance.\n\nYour record shows that you have ${combined} absences in ${course}. As a reminder, this is the maximum number of absences allowed before your final grade is impacted for each additional absence.\n\nYou may check your attendance record by visiting https://brody.linguatorium.com/courses/attendance. If you have any questions, please email your instructor immediately at btdingel@iastate.edu. (Do NOT respond by clicking "Reply".)`;
+      var transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: process.env.EMAIL_USERNAME,
+          pass: process.env.EMAIL_PASS
+        }
+      });
+
+      var mailOptions = {
+        from: process.env.EMAIL_USERNAME,
+        to: student_email,
+        subject: subject,
+        text: text
+      };
+
+      transporter.sendMail(mailOptions, function(error, info) {
+        if (error) {
+          pass;
+        } else {
+          pass;
+        }
+      });
+      await db.allAsync(
+        `UPDATE ${course} SET emailed="yes" WHERE name="${record["name"]}"`
+      );
+    }
+  }
+})(course, date, records);
+
+
+    var updateStatus = true;
+    res.send({ course: course, date: date, records: records, updateStatus: updateStatus  });
+  }
 });
 
 router.get('/courses/grades', secured(), function (req, res, next) {
@@ -269,27 +497,8 @@ router.get('/courses/grades', secured(), function (req, res, next) {
 (async function getGrades(username) {
   try {
   var roster = await readFile("netIDs.txt", "utf8");
-
-  if (!roster.includes(username)) {
-    fs.appendFile("devlog.txt", "Apparently roster doesn't include username", function(err) {
-      if (err) return console.log(err);
-    });
-    res.render("grades-react", {
-      userProfile: JSON.stringify(userProfile, null, 2),
-      title: "Grades",
-      courseHeading: courseHeading,
-      givenName: userProfile.name.givenName,
-      grades: "Not in roster"
-    });
-  } else {
-    fs.appendFile("devlog.txt", "About to try the promise.all", function(err) {
-      if (err) return console.log(err);
-    });
     Promise.all([scrapeUserData(username), getRegexGrades(username)]).then(
       grades => {
-        fs.appendFile("devlog.txt", JSON.stringify(grades), function(err) {
-          if (err) return console.log(err);
-        });
         res.render("grades-react", {
           userProfile: JSON.stringify(userProfile, null, 2),
           title: "Grades",
@@ -299,7 +508,6 @@ router.get('/courses/grades', secured(), function (req, res, next) {
         });
       }
     );
-  }
  } catch (err) {
    fs.appendFile("devlog.txt", err, function(err) {
       if (err) return console.log(err);
@@ -309,9 +517,6 @@ router.get('/courses/grades', secured(), function (req, res, next) {
 
 async function getRegexGrades(username) {
   try {
-    fs.appendFile("devlog.txt", "Got into getRegexGrades()", function(err) {
-      if (err) return console.log(err);
-    });
     var regexAllData = await readFile("user_data.json");
     var regexAllData = JSON.parse(regexAllData);
     if (!regexAllData.hasOwnProperty(username)) {
@@ -333,9 +538,6 @@ async function getRegexGrades(username) {
           if (err) return console.log(err);
         }
       );
-      fs.appendFile("devlog.txt", "\n\nWrote in brand new regex grades\n\n", function(err) {
-        if (err) return console.log(err);
-      });
       return {
         haigyPaigy: 0,
         turkishPlurals: 0,
@@ -351,9 +553,6 @@ async function getRegexGrades(username) {
       articleReplacementScore: regexAllData[username]["articleReplacement"],
       averageScore: regexAllData[username]["average"]
     };
-    fs.appendFile("devlog.txt", "\n\nGot existing regex grades\n\n", function(err) {
-      if (err) return console.log(err);
-    });
     return regexGrades;
   } catch (err) {
     fs.appendFile("devlog.txt", err, function(err) {
@@ -364,21 +563,20 @@ async function getRegexGrades(username) {
 
 async function scrapeUserData(username) {
   try {
-    fs.appendFile("devlog.txt", "Got into scrapeuserData()", function(err) {
-      if (err) return console.log(err);
-    });
     const fccChallenges = JSON.parse(
       await readFile("fcc-challenges.json", "utf8")
     );
 
     var fccUsername = username.replace(/\@\w+\.\w+/, "_ling120");
 
-    fs.appendFile("devlog.txt", `\n\nfccUsername: ${fccUsername}\n\n`, function(err) {
-      if (err) return console.log(err);
-    });
-
     let rawUserData = await fetch(
-      `https://api.freecodecamp.org/internal/api/users/get-public-profile?username=${fccUsername}`
+      `https://api.freecodecamp.org/api/users/get-public-profile?username=${fccUsername}`, {
+        method: 'GET',
+        headers: {
+          "User-Agent":
+            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.88 Safari/537.36"
+        }
+      }
     );
     let userData = await rawUserData.json();
 
@@ -390,18 +588,12 @@ async function scrapeUserData(username) {
         );
         return scores;
       } else {
-        fs.appendFile("devlog.txt", "\n\nNot public\n\n", function(err) {
-          if (err) return console.log(err);
-        });
         return "Not public";
       }
     } else {
       return "No fCC challenges completed yet.";
     }
   } catch (err) {
-    fs.appendFile("devlog.txt", err, function(err) {
-      if (err) return console.log(err);
-    });
     return null;
   }
 }
@@ -428,8 +620,8 @@ function calculate(fccChallenges, userData) {
       debugCount: Math.round((debugCount / 12) * 100) / 100,
       totalCount:
         Math.round(
-          (basicJSCount / 110 + regexCount / 33 + debugCount / 12) / 3 * 10
-        ) / 10
+          (basicJSCount + regexCount + debugCount) / 155 * 100
+        ) / 100
     };
     resolve(scores);
   });
@@ -841,7 +1033,6 @@ router.post('/courses/attendance/master/results', secured(), urlencodedParser, f
     db.all(sql, (err, results)=> {
       let email_sql = 'SELECT * FROM ' + course + ' WHERE name="' + student_name + '"';
       db.all(email_sql, (email_err, email_results)=> {
-      //fs.appendFile("debugging.txt", counter, (err)=>{if (err) throw err;});
         let absences_count = 0;
         let tardies_count = 0;
         let combined_count = 0;
@@ -895,6 +1086,66 @@ router.post('/courses/attendance/master/results', secured(), urlencodedParser, f
     title: 'Attendance',
     date: date
   });
+
+});
+
+router.get('/courses/appointment', secured(), function (req, res, next) {
+
+
+  const { _raw, _json, ...userProfile } = req.user;
+
+  var userInfo = userProfile;
+  var userEmail = userInfo['emails'][0]['value'];
+
+  var courseHeading = checkRosters(userEmail);
+
+  function doBusyTimesCallback(availableSlots) {
+    fs.appendFileSync('debugging.txt', "Made it into callback");
+    res.render('appointment-react', {
+      userProfile: JSON.stringify(userProfile, null, 2),
+      title: "Appointment",
+      courseHeading: courseHeading,
+      givenName: userProfile.name.givenName,
+      availableSlots: availableSlots
+    });
+  }
+  getBusyTimes.doAll(doBusyTimesCallback);
+
+   /* res.render('appointment-react', {
+      userProfile: JSON.stringify(userProfile, null, 2),
+      title: "Appointment",
+      courseHeading: courseHeading,
+      givenName: userProfile.name.givenName
+    });*/
+});
+
+
+router.post('/courses/appointment', secured(), urlencodedParser, function (req, res, next) {
+
+  var selection = req.body['selection']['value'];
+  var reason = req.body['reason'];
+
+  var endTime = new Date(selection);
+  var endTime = endTime.setMinutes(endTime.getMinutes() + 30);
+  var endTime = new Date(endTime).toISOString();
+
+  const { _raw, _json, ...userProfile } = req.user;
+
+  var userInfo = userProfile;
+  var userEmail = userInfo['emails'][0]['value'];
+
+  var guest = userEmail;
+  var startTime = selection;
+  var endTime = endTime;
+  var reason = reason;
+  var course = checkRosters(userEmail);
+
+  function doCallBack(success) {
+    console.log(success);
+  }
+  createEvent.createEvent(guest, course, startTime, endTime, reason, doCallBack);
+
+  res.send({ selection: selection });
 
 });
 
