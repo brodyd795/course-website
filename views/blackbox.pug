@@ -1,0 +1,25 @@
+extends layout
+
+block content
+  .container
+    h2 Welcome, anonymous student!
+    #Blackbox.site-section
+      h4 Use the text box below to submit an anonymous comment or question to your instructor.
+      p Your input is <u>completely anonymous</u>, and therefore your instructor will respond to the entire class.
+      p (Note: Make sure that you select the correct course, or your message will be deleted and not sent to your instructor.)
+      br
+      br
+      form(method="POST" action="/courses/blackbox")
+        label(for="courseSection") Select your course and section number:  
+        select#courseSection.select(name="courseSection", required)
+          option(value="" hidden) Choose course
+          option(value="LING120") LING 120
+          option(value="SPAN101-10am") SPAN 101 (10am)
+          option(value="SPAN101-2pm") SPAN 101 (2pm)        
+        br
+        br
+        label(for="emailText")
+        textarea#emailText.form-control(name="emailText" rows="8" cols="80" placeholder="Enter your comment/question here" required)
+        br
+        button(type="submit") Submit
+      h3(style="color: #2f5e92;") #{thankyou}

@@ -1,0 +1,215 @@
+body {
+  color: black;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #f6f9fd;
+}
+
+header {
+  background: #2f5e92;
+  box-shadow: 0 0 20px #2f5e92;
+  border-radius: 10px;
+}
+
+.title-bar {
+  display: flex;
+  justify-content: space-between;
+  height: 120px;
+}
+
+.title-div {
+  margin: auto;
+}
+
+.title-bar h1 {
+  font-size: 3vw;
+  color: #2d332a;
+}
+
+.title-bar a {
+  text-decoration: none;
+}
+
+.title-bar a:visited {
+  color: #dcebff;
+}
+
+.login-div {
+  display: flex;
+  align-items: flex-start;
+  margin-top: 10px;
+  margin-right: 10px;
+  justify-content: space-between;
+}
+
+#loginBtn {
+  display: block;
+  background: #366496;
+  opacity: 0%;
+  height: 50%;
+  width: 100px;
+  border-radius: 5px;
+  border: 1px solid black;
+}
+
+#loginBtn a {
+  text-decoration: none;
+  font-size: 15px;
+  color: #dcebff;
+  -webkit-transition: font-size 0.2s ease;
+  -moz-transition: font-size 0.2s ease;
+  -ms-transition: font-size 0.2s ease;
+  -o-transition: font-size 0.2s ease;
+  transition: font-size 0.2s ease;
+}
+
+.nav-bar {
+  overflow: hidden;
+}
+
+.nav-bar a {
+  float: left;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  color: #dcebff;
+  font-size: 20px;
+  -webkit-transition: font-size 0.2s ease;
+  -moz-transition: font-size 0.2s ease;
+  -ms-transition: font-size 0.2s ease;
+  -o-transition: font-size 0.2s ease;
+  transition: font-size 0.2s ease;
+}
+
+.nav-bar a:hover {
+  font-size: 22px;
+}
+
+.dropdown {
+  float: left;
+  overflow: hidden;
+}
+
+.dropdown .dropbtn {
+  font-size: 25px;
+  border: none;
+  outline: none;
+  color: white;
+  padding: 14px 16px;
+  background-color: inherit;
+  font-family: inherit; /* Important for vertical align on mobile phones */
+  margin: 0; /* Important for vertical align on mobile phones */
+  background-color: #97AC8F;
+  opacity: 50%;
+  -webkit-transition: font-size 0.2s ease;
+  -moz-transition: font-size 0.2s ease;
+  -ms-transition: font-size 0.2s ease;
+  -o-transition: font-size 0.2s ease;
+  transition: font-size 0.2s ease;
+}
+
+.navbar a:hover, .dropdown:hover .dropbtn {
+  background-color: #97AC8F;
+  font-size: 27px;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+
+}
+
+.dropdown-content a {
+  float: none;
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+
+}
+
+.dropdown-content a:hover {
+  background-color: #97AC8F;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.tab-active {
+  background-color: #97AC8F;
+}
+
+.container {
+  max-width: 75%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  margin-top: 25px;
+  padding-left: 10px;
+  padding-bottom: 50px;
+  border: 1px solid #1a2c40;
+}
+
+#Resources {
+  display: flex;
+  flex-direction: column;
+}
+
+#Resources a {
+  display: block;
+}
+
+#Grades ul {
+  list-style-type: none;
+}
+
+
+
+/* from auth0 template */
+.w3-container a {
+    color: #337ab7;
+    text-decoration: none;
+}
+
+pre {
+    text-align: left;
+    font-family: 'Courier New', Courier, monospace;
+    background-color: #343f5f;
+    color: #fdfeff;
+    overflow: scroll;
+    border: 1px #929090 solid;
+    padding: 15px
+}
+
+.w3-card-4 {
+    padding: 15px;
+}
+
+
+#code {
+  font-size: 15px;
+}
+
+.attendance-titles {
+  display: flex;
+  justify-content: space-between;
+}
+
+.attendance-entry {
+  display: flex;
+  justify-content: space-between;
+}
+
+.student-name {
+  border: none;
+  border-width: 0px;
+  background-color: #f6f9fd;
+  width: 200px;
+}

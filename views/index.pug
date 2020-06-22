@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  .container
+    if locals.user
+      h2 Welcome, #{user.name.givenName}!
+    else
+      h2 Welcome, ISU student!
+    #Overview.site-section
+      p Assignment 4 in LING 120 will help you practice and assess your abilities in writing regular expressions. When logged in, you will find four tasks under 'Assignments', along with task descriptions.
+      p Work on these tasks individually, submitting as many times as you like until the due date (9/15). Only the highest grade for each task will be kept, and the average of the four tasks will be your final grade for Assignment 4. 
+      p You may use any outside resources you like, but you should not confer with any of your classmates or friends in Computer Science. You can find helpful links under Resources above.

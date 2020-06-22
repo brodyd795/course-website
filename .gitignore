@@ -1,0 +1,15 @@
+dev/
+node_modules/
+regex.js
+user_data.json
+.env
+sitemap.xml
+attendance.db
+roster*.txt
+public/build*/
+fcc-challenges.json
+netIDs.txt
+appt/credentials.json
+appt/token.json
+appt/acceptedAppts.txt
+appt/debugging.txt
