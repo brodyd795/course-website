@@ -28,3 +28,5 @@ client/build
 client/src/.vscode/
 client/src/credentials.json
 client/src/token.json
+
+server/debugging.txt
