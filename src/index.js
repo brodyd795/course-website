@@ -1,12 +1,31 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import React, { Component } from "react";
+import ReactDOM from "react-dom";
+import "./style.css";
+import { Renderer } from "./renderer";
 
-ReactDOM.render(<App />, document.getElementById('root'));
+import HeaderLoggedIn from "./components/headerLoggedIn";
+import HeaderLoggedOut from "./components/headerLoggedOut";
+// import NavBar from "./components/navbar";
+import Home from "./components/home";
+import Assignments from "./components/assignments";
+import SandBox from "./components/sandbox";
+import Attendance from "./components/attendance";
+import AttendanceMaster from "./components/attendance-master";
+import Blackbox from "./components/blackbox";
+import Grades from "./components/grades";
+import Appointment from "./components/appointment";
+import Err from "./components/err";
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+const renderer = new Renderer();
+
+renderer.render(HeaderLoggedIn, "headerLoggedIn");
+renderer.render(HeaderLoggedOut, "headerLoggedOut");
+renderer.render(Home, "home");
+renderer.render(Assignments, "assignments");
+renderer.render(SandBox, "sandbox");
+renderer.render(Attendance, "attendance");
+renderer.render(AttendanceMaster, "attendanceMaster");
+renderer.render(Blackbox, "blackbox");
+renderer.render(Grades, "grades");
+renderer.render(Appointment, "appointment");
+renderer.render(Err, "err");
