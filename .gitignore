@@ -1,15 +1,45 @@
-dev/
-node_modules/
-regex.js
-user_data.json
-.env
-sitemap.xml
-attendance.db
-roster*.txt
-public/build*/
-fcc-challenges.json
-netIDs.txt
-appt/credentials.json
-appt/token.json
-appt/acceptedAppts.txt
-appt/debugging.txt
+<<<<<<< HEAD
+server/dev/
+server/node_modules/
+server/regex.js
+server/user_data.json
+server/.env
+server/sitemap.xml
+server/attendance.db
+server/roster*.txt
+server/public/build*/
+server/fcc-challenges.json
+server/netIDs.txt
+server/appt/credentials.json
+server/appt/token.json
+server/appt/acceptedAppts.txt
+server/appt/debugging.txt
+=======
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# production
+/build
+
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+src/.vscode/
+src/credentials.json
+src/token.json
+>>>>>>> course-website-client/master

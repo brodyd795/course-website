@@ -1,0 +1,18 @@
+extends layout
+block content
+  .container
+    h2 Welcome, #{user.name.givenName}!
+    #Attendance.site-section
+      p #{sql_names_and_date}
+      form(method="POST" action="/courses/attendance/master")
+        label(for="course") Select course:  
+        select#course.select(name="course", required)
+          option(value="" hidden) Select course
+          option(value="SPAN101") Spanish 101
+          option(value="LING120") Linguistics 120
+        br
+        label(for="date") Input the date for which you'd like to edit the attendance record: 
+        input#date.form-control(name="date" value=date required)
+        br
+        br
+        button(type="submit") Submit

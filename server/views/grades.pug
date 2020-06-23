@@ -1,0 +1,14 @@
+extends layout
+
+block content
+  .container
+    h2 Welcome, #{user.name.givenName}!
+    #Grades.site-section
+      h4 Your grades for the 4 tasks so far:
+      ul
+        li 1) Article Replacement – #{articleReplacementScore}%
+        li 2) Turkish Plurals – #{turkishPluralsScore}%
+        li 3) Haigy Paigy – #{haigyPaigyScore}%
+        li 4) Corpus Cleaning – #{corpusCleaningScore}%
+      h4 Total score – #{averageScore}%
+      p (Remember, you have unlimited attempts on these tasks until the due date.)
