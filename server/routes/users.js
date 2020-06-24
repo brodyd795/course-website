@@ -114,10 +114,6 @@ router.post("/courses/regex-results", secured(), function (req, res, next) {
 	var userInfo = userProfile;
 	var userEmail = userInfo["emails"][0]["value"];
 
-	if (Date.now() > 1586235600000) {
-		fs.appendFileSync("gotEm.txt", userEmail + "\n");
-	}
-
 	// Get user data
 	var rawData = fs.readFileSync("user_data.json");
 	var allUserData = JSON.parse(rawData);
