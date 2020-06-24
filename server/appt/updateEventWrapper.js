@@ -73,12 +73,12 @@ function doCallBack(success) {
 		deleteEvent.doAll(id, (afterSuccess) => {
 			console.log("Successful delete");
 		});
-		var text = `Dear student,\n\nYour appointment ${course} has been cancelled because your instructor was unable to respond to your request on time. If you would still like an appointment, please visit https://brody.linguatorium.com/courses/appointment.\n\nNOTE: this is an automated response to your request. Do NOT reply to this email.`;
+		var text = `Dear student,\n\nYour appointment ${course} has been cancelled because your instructor was unable to respond to your request on time. If you would still like an appointment, please visit https://dingel.dev/courses/appointment.\n\nNOTE: this is an automated response to your request. Do NOT reply to this email.`;
 		sendEmail(studentEmail, subject, text, course);
 	} else if (instructorResponseStatus === "declined") {
 		deleteEvent.doAll(id, (afterSuccess) => {
 			console.log("Successful delete");
-			var text = `Dear student,\n\nYour appointment ${course} has been cancelled because your instructor was unable to accommodate your requested appointment time. If you would still like an appointment, please visit https://brody.linguatorium.com/courses/appointment.\n\nNOTE: this is an automated response to your request. Do NOT reply to this email.`;
+			var text = `Dear student,\n\nYour appointment ${course} has been cancelled because your instructor was unable to accommodate your requested appointment time. If you would still like an appointment, please visit https://dingel.dev/courses/appointment.\n\nNOTE: this is an automated response to your request. Do NOT reply to this email.`;
 			sendEmail(studentEmail, subject, text, course);
 		});
 	} else if (instructorResponseStatus === "accepted") {

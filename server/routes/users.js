@@ -506,7 +506,7 @@ router.post(
 							(course === "LING120" && combined === 3))
 					) {
 						var subject = "Your attendance in " + course;
-						var text = `Dear ${record["name"]},\n\nThis is an automated message from your ${course} instructor regarding your attendance.\n\nYour record shows that you have ${combined} absences in ${course}. As a reminder, this is the maximum number of absences allowed before your final grade is impacted for each additional absence.\n\nYou may check your attendance record by visiting https://brody.linguatorium.com/courses/attendance. If you have any questions, please email your instructor immediately at btdingel@iastate.edu. (Do NOT respond by clicking "Reply".)`;
+						var text = `Dear ${record["name"]},\n\nThis is an automated message from your ${course} instructor regarding your attendance.\n\nYour record shows that you have ${combined} absences in ${course}. As a reminder, this is the maximum number of absences allowed before your final grade is impacted for each additional absence.\n\nYou may check your attendance record by visiting https://dingel.dev/courses/attendance. If you have any questions, please email your instructor immediately at btdingel@iastate.edu. (Do NOT respond by clicking "Reply".)`;
 						var transporter = nodemailer.createTransport({
 							service: "gmail",
 							auth: {
@@ -1210,7 +1210,7 @@ router.post(
 							combined_count +
 							" absences in " +
 							course +
-							'. As a reminder, this is the maximum number of absences allowed before your final grade is impacted for each additional absence.\n\nYou may check your attendance record by visiting http://brody.linguatorium.com/courses/attendance. If you have any questions, please email your instructor immediately at btdingel@iastate.edu. (Do NOT respond by clicking "Reply".)';
+							'. As a reminder, this is the maximum number of absences allowed before your final grade is impacted for each additional absence.\n\nYou may check your attendance record by visiting http://dingel.dev/courses/attendance. If you have any questions, please email your instructor immediately at btdingel@iastate.edu. (Do NOT respond by clicking "Reply".)';
 						var transporter = nodemailer.createTransport({
 							service: "gmail",
 							auth: {
