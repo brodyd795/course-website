@@ -1,6 +1,10 @@
-### Course Website
+### Course Website + Personal Website
 
-This project was created to help manage the Spanish 101 and Linguistics 120 courses that I taught while working as a graduate teaching assistant at Iowa State University. 
+This project was created to help manage the Spanish 101 and Linguistics 120 courses that I taught while working as a graduate teaching assistant at Iowa State University. Also integrated is my current personal portfolio site.
+
+[Live url](https://dingel.dev/) for personal site
+
+[Live url](https://dingel.dev/courses) for course website
 
 ### Disclaimer
 
