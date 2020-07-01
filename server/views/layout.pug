@@ -9,7 +9,7 @@ html
   header
     .title-bar
       .title-div
-        h1 <a href="/courses/index-old">LING 120 – Computers and Language</a>
+        h1 <a href="/index-old">LING 120 – Computers and Language</a>
       .login-div
         button(id="loginBtn")
           if locals.user
@@ -17,13 +17,13 @@ html
           else
             a(id="qsLoginBtn" href="/login").login-btn.logOutInBtn Log In
     .nav-bar
-      a(href="/courses/index-old") Overview
+      a(href="/index-old") Overview
       if locals.user
-        a(href="/courses/assignments-old") Assignments
-        a(href="/courses/grades-old") Grades
-        a(href="/courses/attendance-old") Attendance
-      a(href="/courses/resources-old") Resources
+        a(href="/assignments-old") Assignments
+        a(href="/grades-old") Grades
+        a(href="/attendance-old") Attendance
+      a(href="/resources-old") Resources
       if locals.user
-        a(href="/courses/blackbox-old") Black Box
+        a(href="/blackbox-old") Black Box
   body
     block content

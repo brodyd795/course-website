@@ -17,7 +17,7 @@ class Err extends Component {
 							</h5>
 							<h5 className="text-center mt-4">
 								If you're lost, try heading{" "}
-								<a href="https://dingel.dev/" target="_blank">
+								<a href="https://courses.dingel.dev/" target="_blank">
 									home
 								</a>
 								.

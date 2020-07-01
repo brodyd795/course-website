@@ -5,7 +5,7 @@ const moment = require("moment");
 
 const doAll = (id, callback) => {
 	const SCOPES = ["https://www.googleapis.com/auth/calendar"];
-	const TOKEN_PATH = "/home/brody/course-website/server/appt/token.json";
+	const TOKEN_PATH = "/home/brody/course-website/prod/server/appt/token.json";
 
 	var timeMin = new Date();
 	var timeMax = new Date(timeMin);
@@ -52,7 +52,7 @@ const doAll = (id, callback) => {
 	};
 
 	fs.readFile(
-		"/home/brody/course-website/server/appt/credentials.json",
+		"/home/brody/course-website/prod/server/appt/credentials.json",
 		(err, content) => {
 			if (err) return console.log("Error loading client secret file:", err);
 			authorize(JSON.parse(content), deleteEvent);

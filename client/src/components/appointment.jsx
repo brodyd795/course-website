@@ -73,7 +73,7 @@ class Appointment extends Component {
 		async function doRequestAndUpdate() {
 			let result = await makeRequest(
 				"POST",
-				"https://dingel.dev/courses/appointment"
+				"https://courses.dingel.dev/appointment"
 			);
 
 			// newState.dateValue = new Date().toISOString().substring(0, 10);

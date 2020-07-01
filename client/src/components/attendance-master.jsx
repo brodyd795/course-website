@@ -61,7 +61,7 @@ class AttendanceMaster extends Component {
 			};
 			let result = await this.makeRequest(
 				"POST",
-				"https://dingel.dev/courses/attendance-master",
+				"https://courses.dingel.dev/attendance-master",
 				params
 			);
 
@@ -100,7 +100,7 @@ class AttendanceMaster extends Component {
 		};
 		let result = await this.makeRequest(
 			"POST",
-			"https://dingel.dev/courses/attendance-master-update",
+			"https://courses.dingel.dev/attendance-master-update",
 			params
 		);
 

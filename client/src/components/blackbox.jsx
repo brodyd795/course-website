@@ -34,7 +34,7 @@ class Blackbox extends Component {
 		async function doRequestAndUpdate() {
 			let result = await makeRequest(
 				"POST",
-				"https://dingel.dev/courses/blackbox"
+				"https://courses.dingel.dev/blackbox"
 			);
 			newState.showResponse = true;
 			newState.responseStatus = true;

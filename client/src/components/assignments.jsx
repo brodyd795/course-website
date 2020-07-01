@@ -89,7 +89,7 @@ class Assignments extends Component {
 		async function doRequestAndUpdate() {
 			let result = await makeRequest(
 				"POST",
-				"https://dingel.dev/courses/regex-results"
+				"https://courses.dingel.dev/regex-results"
 			);
 
 			var responseData = JSON.parse(result);

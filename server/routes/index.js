@@ -34,9 +34,9 @@ router.get('/sitemap', function(req, res, next) {
   res.sendFile(path.join(__dirname+'/../sitemap.xml'));
 });
 
-router.get('/', function(req, res, next) {
-  res.sendFile(path.join(__dirname+'/../brody/index.html'));
-});
+// router.get('/', function(req, res, next) {
+//   res.sendFile(path.join(__dirname+'/../brody/index.html'));
+// });
 
 router.post('/', urlencodedParser, function(req, res, next) {
   var contacterData = req.body;
@@ -90,11 +90,11 @@ router.post('/', urlencodedParser, function(req, res, next) {
 });
 
 
-router.get('/courses/index-old', function (req, res, next) {
+router.get('/index-old', function (req, res, next) {
   res.render('index', { title: 'Overview' });
 });
 
-router.get('/courses', function (req, res, next) {
+router.get('/', function (req, res, next) {
   if (req.user) {
     const { _raw, _json, ...userProfile } = req.user;
 
@@ -128,7 +128,7 @@ router.get('/courses', function (req, res, next) {
 });*/
 
 /* GET resources page */
-router.get('/courses/resources-old', function (req, res, next) {
+router.get('/resources-old', function (req, res, next) {
   res.render('resources', { title: 'Resources' });
 });
 

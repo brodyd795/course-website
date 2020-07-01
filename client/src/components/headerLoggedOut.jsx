@@ -9,14 +9,14 @@ const HeaderLoggedOut = () => {
 						<div className="col-12">
 							<h1>
 								<a
-									href="https://dingel.dev/courses"
+									href="https://courses.dingel.dev"
 									className="topHeading"
 									target="_blank">
 									LING 120 / SPAN 101
 								</a>
 							</h1>
 							<h4>
-								<a href="https://dingel.dev/courses" className="topHeading">
+								<a href="https://courses.dingel.dev" className="topHeading">
 									Courses with Brody
 								</a>
 							</h4>
@@ -40,7 +40,7 @@ const HeaderLoggedOut = () => {
 				<div className="collapse navbar-collapse" id="navbarSupportedContent">
 					<ul className="navbar-nav mr-auto">
 						<li className="nav-item active">
-							<a className="nav-link" href="https://dingel.dev/courses">
+							<a className="nav-link" href="https://courses.dingel.dev">
 								Home <span className="sr-only">(current)</span>
 							</a>
 						</li>

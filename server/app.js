@@ -22,7 +22,7 @@ var strategy = new Auth0Strategy(
 		domain: process.env.AUTH0_DOMAIN, // get credentials from .env file in top directory
 		clientID: process.env.AUTH0_CLIENT_ID,
 		clientSecret: process.env.AUTH0_CLIENT_SECRET,
-		callbackURL: "https://dingel.dev/callback",
+		callbackURL: "https://courses.dingel.dev/callback",
 		// process.env.AUTH0_CALLBACK_URL || 'http://localhost:3000/callback' // for local server
 	},
 	function (accessToken, refreshToken, extraParams, profile, done) {

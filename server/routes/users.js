@@ -14,7 +14,7 @@ var fs = require("fs");
 var nodemailer = require("nodemailer");
 var sqlite3 = require("sqlite3").verbose();
 let db = new sqlite3.Database(
-	"/home/brody/course-website/server/attendance.db"
+	"/home/brody/course-website/prod/server/attendance.db"
 );
 
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
@@ -56,7 +56,7 @@ db.allAsync = function (sql) {
 };
 
 /* GET assignments. */
-router.get("/courses/assignments-old", secured(), function (req, res, next) {
+router.get("/assignments-old", secured(), function (req, res, next) {
 	const { _raw, _json, ...userProfile } = req.user;
 	res.render("assignments", {
 		userProfile: JSON.stringify(userProfile, null, 2),
@@ -64,7 +64,7 @@ router.get("/courses/assignments-old", secured(), function (req, res, next) {
 	});
 });
 
-router.get("/courses/assignments", secured(), function (req, res, next) {
+router.get("/assignments", secured(), function (req, res, next) {
 	const { _raw, _json, ...userProfile } = req.user;
 	const otherData = "otherData";
 
@@ -86,7 +86,7 @@ router.get("/courses/assignments", secured(), function (req, res, next) {
 	});
 });
 
-router.post("/courses/regex-results", secured(), function (req, res, next) {
+router.post("/regex-results", secured(), function (req, res, next) {
 	var input = req.body["regexValue"];
 	var input = input.trim();
 	var task = req.body["assignmentValue"]["value"];
@@ -217,7 +217,7 @@ router.post("/courses/regex-results", secured(), function (req, res, next) {
 	res.send(sendData);
 });
 
-router.get("/courses/sandbox", secured(), function (req, res, next) {
+router.get("/sandbox", secured(), function (req, res, next) {
 	const { _raw, _json, ...userProfile } = req.user;
 	const otherData = "otherData";
 
@@ -239,7 +239,7 @@ router.get("/courses/sandbox", secured(), function (req, res, next) {
 	});
 });
 
-router.get("/courses/blackbox", secured(), function (req, res, next) {
+router.get("/blackbox", secured(), function (req, res, next) {
 	const { _raw, _json, ...userProfile } = req.user;
 	const otherData = "otherData";
 
@@ -261,7 +261,7 @@ router.get("/courses/blackbox", secured(), function (req, res, next) {
 	});
 });
 
-router.post("/courses/blackbox", secured(), function (req, res, next) {
+router.post("/blackbox", secured(), function (req, res, next) {
 	var input = req.body["messageValue"];
 	var course = req.body["courseHeading"];
 
@@ -299,7 +299,7 @@ router.post("/courses/blackbox", secured(), function (req, res, next) {
 	res.send();
 });
 
-router.get("/courses/attendance", secured(), function (req, res, next) {
+router.get("/attendance", secured(), function (req, res, next) {
 	const { _raw, _json, ...userProfile } = req.user;
 
 	var userInfo = userProfile;
@@ -396,7 +396,7 @@ router.get("/courses/attendance", secured(), function (req, res, next) {
 	}
 });
 
-router.get("/courses/attendance-master", secured(), function (req, res, next) {
+router.get("/attendance-master", secured(), function (req, res, next) {
 	const { _raw, _json, ...userProfile } = req.user;
 
 	var userInfo = userProfile;
@@ -417,7 +417,7 @@ router.get("/courses/attendance-master", secured(), function (req, res, next) {
 });
 
 router.post(
-	"/courses/attendance-master",
+	"/attendance-master",
 	secured(),
 	urlencodedParser,
 	function (req, res, next) {
@@ -455,7 +455,7 @@ router.post(
 );
 
 router.post(
-	"/courses/attendance-master-update",
+	"/attendance-master-update",
 	secured(),
 	urlencodedParser,
 	function (req, res, next) {
@@ -502,7 +502,7 @@ router.post(
 							(course === "LING120" && combined === 3))
 					) {
 						var subject = "Your attendance in " + course;
-						var text = `Dear ${record["name"]},\n\nThis is an automated message from your ${course} instructor regarding your attendance.\n\nYour record shows that you have ${combined} absences in ${course}. As a reminder, this is the maximum number of absences allowed before your final grade is impacted for each additional absence.\n\nYou may check your attendance record by visiting https://dingel.dev/courses/attendance. If you have any questions, please email your instructor immediately at btdingel@iastate.edu. (Do NOT respond by clicking "Reply".)`;
+						var text = `Dear ${record["name"]},\n\nThis is an automated message from your ${course} instructor regarding your attendance.\n\nYour record shows that you have ${combined} absences in ${course}. As a reminder, this is the maximum number of absences allowed before your final grade is impacted for each additional absence.\n\nYou may check your attendance record by visiting https://courses.dingel.dev/attendance. If you have any questions, please email your instructor immediately at btdingel@iastate.edu. (Do NOT respond by clicking "Reply".)`;
 						var transporter = nodemailer.createTransport({
 							service: "gmail",
 							auth: {
@@ -543,7 +543,7 @@ router.post(
 	}
 );
 
-router.get("/courses/grades", secured(), function (req, res, next) {
+router.get("/grades", secured(), function (req, res, next) {
 	const { _raw, _json, ...userProfile } = req.user;
 
 	var userInfo = userProfile;
@@ -689,7 +689,7 @@ router.get("/courses/grades", secured(), function (req, res, next) {
 	}
 });
 
-router.post("/courses/assignments-old", secured(), urlencodedParser, function (
+router.post("/assignments-old", secured(), urlencodedParser, function (
 	req,
 	res,
 	next
@@ -820,7 +820,7 @@ router.post("/courses/assignments-old", secured(), urlencodedParser, function (
 	});
 });
 
-router.get("/courses/grades-old", secured(), function (req, res, next) {
+router.get("/grades-old", secured(), function (req, res, next) {
 	// Get user email
 	const { _raw, _json, ...userProfile } = req.user;
 	var userInfo = userProfile;
@@ -882,11 +882,11 @@ router.get("/courses/grades-old", secured(), function (req, res, next) {
 	}
 });
 
-router.get("/courses/blackbox-old", secured(), function (req, res, next) {
+router.get("/blackbox-old", secured(), function (req, res, next) {
 	res.render("blackbox");
 });
 
-router.post("/courses/blackbox-old", secured(), urlencodedParser, function (
+router.post("/blackbox-old", secured(), urlencodedParser, function (
 	req,
 	res,
 	next
@@ -948,7 +948,7 @@ router.post("/courses/blackbox-old", secured(), urlencodedParser, function (
 });
 
 /* GET attendance. */
-router.get("/courses/attendance-old", secured(), function (req, res, next) {
+router.get("/attendance-old", secured(), function (req, res, next) {
 	const { _raw, _json, ...userProfile } = req.user;
 	var userInfo = userProfile;
 	var userEmail = userInfo["emails"][0]["value"];
@@ -959,7 +959,7 @@ router.get("/courses/attendance-old", secured(), function (req, res, next) {
 	});
 });
 
-router.post("/courses/attendance-old", secured(), urlencodedParser, function (
+router.post("/attendance-old", secured(), urlencodedParser, function (
 	req,
 	res,
 	next
@@ -1045,7 +1045,7 @@ router.post("/courses/attendance-old", secured(), urlencodedParser, function (
 	});
 });
 
-router.get("/courses/attendance/master", secured(), urlencodedParser, function (
+router.get("/attendance/master", secured(), urlencodedParser, function (
 	req,
 	res,
 	next
@@ -1074,7 +1074,7 @@ router.get("/courses/attendance/master", secured(), urlencodedParser, function (
 });
 
 router.post(
-	"/courses/attendance/master",
+	"/attendance/master",
 	secured(),
 	urlencodedParser,
 	function (req, res, next) {
@@ -1140,7 +1140,7 @@ router.post(
 );
 
 router.post(
-	"/courses/attendance/master/results",
+	"/attendance/master/results",
 	secured(),
 	urlencodedParser,
 	function (req, res, next) {
@@ -1206,7 +1206,7 @@ router.post(
 							combined_count +
 							" absences in " +
 							course +
-							'. As a reminder, this is the maximum number of absences allowed before your final grade is impacted for each additional absence.\n\nYou may check your attendance record by visiting http://dingel.dev/courses/attendance. If you have any questions, please email your instructor immediately at btdingel@iastate.edu. (Do NOT respond by clicking "Reply".)';
+							'. As a reminder, this is the maximum number of absences allowed before your final grade is impacted for each additional absence.\n\nYou may check your attendance record by visiting http://courses.dingel.dev/attendance. If you have any questions, please email your instructor immediately at btdingel@iastate.edu. (Do NOT respond by clicking "Reply".)';
 						var transporter = nodemailer.createTransport({
 							service: "gmail",
 							auth: {
@@ -1249,7 +1249,7 @@ router.post(
 	}
 );
 
-router.get("/courses/appointment", secured(), function (req, res, next) {
+router.get("/appointment", secured(), function (req, res, next) {
 	const { _raw, _json, ...userProfile } = req.user;
 
 	var userInfo = userProfile;
@@ -1277,7 +1277,7 @@ router.get("/courses/appointment", secured(), function (req, res, next) {
     });*/
 });
 
-router.post("/courses/appointment", secured(), urlencodedParser, function (
+router.post("/appointment", secured(), urlencodedParser, function (
 	req,
 	res,
 	next

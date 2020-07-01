@@ -8,13 +8,13 @@ const HeaderLoggedIn = (props) => {
 					<div className="row align-self-center text-center text-md-left">
 						<div className="col-12">
 							<h1>
-								<a href="https://dingel.dev/courses" className="topHeading">
+								<a href="https://courses.dingel.dev" className="topHeading">
 									{props.courseheading || "SPAN 101 / LING 120"}
 								</a>
 							</h1>
 							<h4>
 								<a
-									href="https://dingel.dev/courses"
+									href="https://courses.dingel.dev"
 									className="topHeading"
 									target="_blank">
 									Courses with Brody
@@ -43,7 +43,7 @@ const HeaderLoggedIn = (props) => {
 							className={
 								"nav-item " + (props.currenttab === "Home" ? "active " : "")
 							}>
-							<a className="nav-link" href="https://dingel.dev/courses">
+							<a className="nav-link" href="https://courses.dingel.dev">
 								Home
 							</a>
 						</li>
@@ -55,7 +55,7 @@ const HeaderLoggedIn = (props) => {
 							}>
 							<a
 								className="nav-link"
-								href="https://dingel.dev/courses/assignments">
+								href="https://courses.dingel.dev/assignments">
 								Assignments
 							</a>
 						</li>
@@ -65,7 +65,7 @@ const HeaderLoggedIn = (props) => {
 								(props.currenttab === "Sandbox" ? "active " : "") +
 								(props.courseheading === "Español 101" ? "d-none" : "")
 							}>
-							<a className="nav-link" href="https://dingel.dev/courses/sandbox">
+							<a className="nav-link" href="https://courses.dingel.dev/sandbox">
 								Sandbox
 							</a>
 						</li>
@@ -75,7 +75,7 @@ const HeaderLoggedIn = (props) => {
 								(props.currenttab === "Grades" ? "active " : "") +
 								(props.courseheading === "Español 101" ? "d-none" : "")
 							}>
-							<a className="nav-link" href="https://dingel.dev/courses/grades">
+							<a className="nav-link" href="https://courses.dingel.dev/grades">
 								Grades
 							</a>
 						</li>
@@ -86,7 +86,7 @@ const HeaderLoggedIn = (props) => {
 							}>
 							<a
 								className="nav-link"
-								href="https://dingel.dev/courses/attendance">
+								href="https://courses.dingel.dev/attendance">
 								Attendance
 							</a>
 						</li>
@@ -97,7 +97,7 @@ const HeaderLoggedIn = (props) => {
 							}>
 							<a
 								className="nav-link"
-								href="https://dingel.dev/courses/blackbox">
+								href="https://courses.dingel.dev/blackbox">
 								Black Box
 							</a>
 						</li>
@@ -108,7 +108,7 @@ const HeaderLoggedIn = (props) => {
 							}>
 							<a
 								className="nav-link"
-								href="https://dingel.dev/courses/appointment">
+								href="https://courses.dingel.dev/appointment">
 								Appointment
 							</a>
 						</li>

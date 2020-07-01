@@ -4,7 +4,7 @@ block content
     h2 Welcome, #{user.name.givenName}!
     #Attendance.site-section
       p #{sql_names_and_date}
-      form(method="POST" action="/courses/attendance/master")
+      form(method="POST" action="/attendance/master")
         label(for="course") Select course:
         select#course.select(name="course", required)
           option(value="" hidden) Select course
@@ -23,7 +23,7 @@ block content
           div#name-title Name
           div#status-title Status
         .attendance-results
-          form(method="POST" action="/courses/attendance/master/results")
+          form(method="POST" action="/attendance/master/results")
             -var data = roster
             -var student_name_ids = []
             -var student_status_ids = []
