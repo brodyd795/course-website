@@ -13,6 +13,7 @@ server/appt/credentials.json
 server/appt/token.json
 server/appt/acceptedAppts.txt
 server/appt/debugging.txt
+server/run.sh
 
 # dependencies
 client/node_modules
