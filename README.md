@@ -1,3 +1,5 @@
+## NOTE: No longer maintained
+
 ### Course Website
 
 This project was created to help manage the Spanish 101 (Elementary Spanish) and Linguistics 120 (Computers and Language) courses that I taught while working as a graduate teaching assistant at Iowa State University.
