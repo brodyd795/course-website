@@ -20,7 +20,7 @@
     "express": "^4.17.1",
     "express-session": "^1.16.1",
     "googleapis": "^46.0.0",
-    "minimist": "^0.2.1",
+    "minimist": "^1.2.6",
     "moment": "^2.24.0",
     "morgan": "^1.9.1",
     "node-cron": "^2.0.3",
